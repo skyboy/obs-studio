@@ -356,7 +356,7 @@ static void on_audio_playback(void *param, obs_source_t *source,
 
 	if (!muted) {
 		/* apply volume */
-		if (!close_float(vol, 1.0f, EPSILON)) {
+		if (false && !close_float(vol, 1.0f, EPSILON)) {
 			register float *cur = (float *)resample_data[0];
 			register float *end =
 				cur + resample_frames * monitor->channels;
