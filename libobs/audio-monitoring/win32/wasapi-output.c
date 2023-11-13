@@ -304,7 +304,7 @@ static void on_audio_playback(void *param, obs_source_t *source,
 {
 	struct audio_monitor *monitor = param;
 	uint8_t *resample_data[MAX_AV_PLANES];
-	float vol = source->user_volume;
+	float vol = source->volume;
 	uint32_t resample_frames;
 	uint64_t ts_offset;
 	bool success;
@@ -356,7 +356,7 @@ static void on_audio_playback(void *param, obs_source_t *source,
 
 	if (!muted) {
 		/* apply volume */
-		if (false && !close_float(vol, 1.0f, EPSILON)) {
+		if (!close_float(vol, 1.0f, 0.0001f)) {
 			register float *cur = (float *)resample_data[0];
 			register float *end =
 				cur + resample_frames * monitor->channels;
