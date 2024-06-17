@@ -1616,9 +1616,9 @@ void AdvancedOutput::SetupOutputs()
 int AdvancedOutput::GetAudioBitrate(size_t i) const
 {
 	static const char *names[] = {
-		"Track1Bitrate", "Track2Bitrate", "Track3Bitrate",
-		"Track4Bitrate", "Track5Bitrate", "Track6Bitrate",
-		"Track7Bitrate", "Track8Bitrate", "Track9Bitrate",
+		"Track1Bitrate",  "Track2Bitrate",  "Track3Bitrate",
+		"Track4Bitrate",  "Track5Bitrate",  "Track6Bitrate",
+		"Track7Bitrate",  "Track8Bitrate",  "Track9Bitrate",
 		"Track10Bitrate", "Track11Bitrate", "Track12Bitrate",
 		"Track13Bitrate", "Track14Bitrate", "Track15Bitrate",
 	};
