@@ -8,6 +8,7 @@
 
 #include <math.h>
 
+#pragma comment(lib, "legacy_stdio_definitions.lib")
 #include <zlib.h>
 
 //#define TRACK_OVERHEAD
