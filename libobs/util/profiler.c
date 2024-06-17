@@ -8,8 +8,13 @@
 
 #include <math.h>
 
-#pragma comment(lib, "legacy_stdio_definitions.lib")
+#ifdef ZLIB_WINAPI
 #include <zlib.h>
+#else
+#define ZLIB_WINAPI
+#include <zlib.h>
+#undef ZLIB_WINAPI
+#endif
 
 //#define TRACK_OVERHEAD
 
