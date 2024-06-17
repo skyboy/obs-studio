@@ -8,13 +8,7 @@
 
 #include <math.h>
 
-#ifdef ZLIB_WINAPI
 #include <zlib.h>
-#else
-#define ZLIB_WINAPI
-#include <zlib.h>
-#undef ZLIB_WINAPI
-#endif
 
 //#define TRACK_OVERHEAD
 
@@ -1045,12 +1039,14 @@ bool profiler_snapshot_dump_csv(const profiler_snapshot_t *snap,
 
 static void dump_csv_gzwrite(void *data, struct dstr *buffer)
 {
-	gzwrite(data, buffer->array, (unsigned)buffer->len);
+	//gzwrite(data, buffer->array, (unsigned)buffer->len);
 }
 
 bool profiler_snapshot_dump_csv_gz(const profiler_snapshot_t *snap,
 				   const char *filename)
 {
+	if (1)
+		return false;
 	gzFile gz;
 #ifdef _WIN32
 	wchar_t *filename_w = NULL;
