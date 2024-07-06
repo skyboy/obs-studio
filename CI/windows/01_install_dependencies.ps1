@@ -106,14 +106,34 @@ function Install-cef {
     if (!((Test-Path "${DepsBuildDir}/cef_binary_${Version}_windows_${ArchSuffix}") -and (Test-Path "${DepsBuildDir}/cef_binary_${Version}_windows_${ArchSuffix}/build/libcef_dll_wrapper/Release/libcef_dll_wrapper.lib"))) {
         Write-Step "Download..."
         $ProgressPreference = $(if ($Quiet.isPresent) { 'SilentlyContinue' } else { 'Continue' })
-        Invoke-WebRequest -Uri "https://cdn-fastly.obsproject.com/downloads/cef_binary_${Version}_windows_${ArchSuffix}.zip" -UseBasicParsing -OutFile "cef_binary_${Version}_windows_${ArchSuffix}.zip"
+        #Invoke-WebRequest -Uri "https://cdn-fastly.obsproject.com/downloads/cef_binary_${Version}_windows_${ArchSuffix}.zip" -UseBasicParsing -OutFile "cef_binary_${Version}_windows_${ArchSuffix}.zip"
+        Invoke-WebRequest -Uri "https://github.com/chromiumembedded/cef/archive/refs/heads/${Version}.zip" -UseBasicParsing -OutFile "cef_dummy.zip"
+        Invoke-WebRequest -Uri "https://cef-builds.spotifycdn.com/cef_binary_109.1.18%2Bgf1c41e4%2Bchromium-109.0.5414.120_windows64.tar.bz2" -UseBasicParsing -OutFile "cef_binary.tar.bz2"
         $ProgressPreference = "Continue"
 
         Write-Step "Unpack..."
-        Expand-Archive -Path "cef_binary_${Version}_windows_${ArchSuffix}.zip" -Force
+        Expand-Archive -Path "cef_dummy.zip" -Force
+        Move-Item -Path "${DepsBuildDir}/cef_dummy/cef-${Version}" -Destination "${DepsBuildDir}/cef_binary_${Version}_windows_${ArchSuffix}" -Force
+        #Expand-Tar "cef_binary.tar.bz2" "cef_binary${ArchSuffix}.tar"
+        Tar -xzf "cef_binary.tar.bz2" "cef_binary"
+        Write-Step "$(Test-Path `"${DepsBuildDir}/cef_binary`")"
+        Write-Step "$(Test-Path `"${DepsBuildDir}/cef_binary/cef_binary_109.1.18%2Bgf1c41e4%2Bchromium-109.0.5414.120_windows64`")"
+        Move-Item -Path "${DepsBuildDir}/cef_binary/cef_binary_109.1.18%2Bgf1c41e4%2Bchromium-109.0.5414.120_windows64" -Destination "${DepsBuildDir}/cef_binary_${Version}_windows_${ArchSuffix}" -Force
+
+        Write-Step "Create Project files..."
+        & "${DepsBuildDir}/cef_binary_${Version}_windows_${ArchSuffix}/cef_create_projects.bat"
     } else {
         Write-Step "Found existing CEF framework and loader library..."
     }
+}
+
+function Expand-Tar($tarFile, $dest) {
+
+    if (-not (Get-Command Expand-7Zip -ErrorAction Ignore)) {
+        Install-Package -Scope CurrentUser -Force 7Zip4PowerShell -ProviderName 'PowerShellGet' > $null
+    }
+
+    Expand-7Zip $tarFile $dest
 }
 
 function Install-Dependencies {
