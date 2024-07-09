@@ -18,7 +18,9 @@ bool is_app(HANDLE process)
 						   &size_ret);
 		if (!success) {
 			const DWORD error = GetLastError();
-			if (error != 0x00000057) { // ERROR_INVALID_PARAMETER -- we are on windows 7: definitely a smarter way to do this
+			if (error != 0x00000057) {
+				// ERROR_INVALID_PARAMETER -- we are on windows 7:
+				// definitely a smarter way to do this
 				blog(LOG_ERROR,
 					 "is_app GetTokenInformation failed: 0x%08lX",
 					 error);
