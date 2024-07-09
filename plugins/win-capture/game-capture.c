@@ -730,8 +730,8 @@ static inline bool attempt_existing_hook(struct game_capture *gc)
 {
 	gc->hook_restart = open_event_gc(gc, EVENT_CAPTURE_RESTART);
 	if (gc->hook_restart) {
-		info("existing hook found, signaling process: %s",
-		     gc->config.executable);
+		debug("existing hook found, signaling process: %s",
+		      gc->config.executable);
 		SetEvent(gc->hook_restart);
 		return true;
 	}
@@ -1056,7 +1056,7 @@ static bool init_hook(struct game_capture *gc)
 		goto hook_failed;
 	}
 
-	info("all init for capturing %s", exe.array);
+	debug("all init for capturing %s", exe.array);
 	dstr_free(&exe);
 
 	SetEvent(gc->hook_init);
@@ -1207,7 +1207,7 @@ static void try_hook(struct game_capture *gc)
 			stop_capture(gc);
 		}
 	} else {
-		info("could not get window");
+		debug("could not get window");
 		gc->active = false;
 	}
 }
@@ -1715,7 +1715,7 @@ static inline bool init_shtex_capture(struct game_capture *gc)
 
 static bool start_capture(struct game_capture *gc)
 {
-	info("Starting capture");
+	debug("Starting capture");
 
 	/* prevent from using a DLL version that's higher than current */
 	if (gc->global_hook_info->hook_ver_major > HOOK_VER_MAJOR) {
@@ -1800,7 +1800,7 @@ static void game_capture_tick(void *data, float seconds)
 
 	if (!obs_source_showing(gc->source)) {
 		if (gc->showing) {
-			info("source no longer visible");
+			debug("source no longer visible");
 			if (gc->active)
 				stop_capture(gc);
 			gc->showing = false;
@@ -1813,7 +1813,7 @@ static void game_capture_tick(void *data, float seconds)
 	}
 
 	if (gc->hook_stop && object_signalled(gc->hook_stop)) {
-		info("hook stop signal received");
+		debug("hook stop signal received");
 		stop_capture(gc);
 	}
 	if (gc->active && deactivate) {
@@ -1843,13 +1843,13 @@ static void game_capture_tick(void *data, float seconds)
 	}
 
 	if (gc->hook_ready && object_signalled(gc->hook_ready)) {
-		info("capture initializing!");
+		debug("capture initializing!");
 		enum capture_result result = init_capture_data(gc);
 
 		if (result == CAPTURE_SUCCESS)
 			gc->capturing = start_capture(gc);
 		else
-			info("init_capture_data failed");
+			debug("init_capture_data failed");
 
 		if (result != CAPTURE_RETRY && !gc->capturing) {
 			gc->retry_interval =
