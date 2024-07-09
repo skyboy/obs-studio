@@ -1054,7 +1054,7 @@ static bool init_hook(struct game_capture *gc)
 		info("cannot capture %s due to being uneventful", exe.array);
 		goto hook_failed;
 	}
-	
+
 	dstr_free(&exe);
 
 	SetEvent(gc->hook_init);
