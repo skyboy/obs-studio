@@ -543,6 +543,7 @@ static void game_capture_update(void *data, obs_data_t *settings)
 
 	if (!gc->initial_config) {
 		if (reset_capture) {
+			info("resetting capture");
 			stop_capture(gc);
 		}
 	} else {
@@ -1055,6 +1056,7 @@ static bool init_hook(struct game_capture *gc)
 		goto hook_failed;
 	}
 
+	debug("all init for capturing %s", exe.array);
 	dstr_free(&exe);
 
 	SetEvent(gc->hook_init);
@@ -1186,23 +1188,26 @@ static void try_hook(struct game_capture *gc)
 							 &gc->process_id);
 
 		// Make sure we never try to hook ourselves (projector)
-		if (gc->process_id == GetCurrentProcessId())
+		if (gc->process_id == GetCurrentProcessId()) {
+			warn("cannot hook self");
 			return;
+		}
 
-		if (!gc->thread_id && gc->process_id)
-			return;
-		if (!gc->process_id) {
+		if (!gc->thread_id || !gc->process_id) {
 			warn("error acquiring, failed to get window "
 			     "thread/process ids: %lu",
 			     GetLastError());
-			gc->error_acquiring = true;
+			if (!gc->process_id) // compat old bhvr
+				gc->error_acquiring = true;
 			return;
 		}
 
 		if (!init_hook(gc)) {
+			warn("could not hook");
 			stop_capture(gc);
 		}
 	} else {
+		debug("could not get window");
 		gc->active = false;
 	}
 }
@@ -1795,6 +1800,7 @@ static void game_capture_tick(void *data, float seconds)
 
 	if (!obs_source_showing(gc->source)) {
 		if (gc->showing) {
+			debug("source no longer visible");
 			if (gc->active)
 				stop_capture(gc);
 			gc->showing = false;
