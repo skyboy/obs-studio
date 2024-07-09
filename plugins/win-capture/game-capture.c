@@ -1005,7 +1005,6 @@ static bool init_events(struct game_capture *gc);
 static bool init_hook(struct game_capture *gc)
 {
 	struct dstr exe = {0};
-	bool blacklisted_process = false;
 
 	if (gc->config.mode == CAPTURE_MODE_ANY) {
 		if (get_window_exe(&exe, gc->next_window)) {
@@ -1018,40 +1017,45 @@ static bool init_hook(struct game_capture *gc)
 		}
 	}
 
-	blacklisted_process = is_blacklisted_exe(exe.array);
-	if (blacklisted_process)
+	if (is_blacklisted_exe(exe.array)) {
 		info("cannot capture %s due to being blacklisted", exe.array);
-	dstr_free(&exe);
-
-	if (blacklisted_process) {
-		return false;
+		goto hook_failed;
 	}
+
 	if (target_suspended(gc)) {
-		return false;
+		info("cannot capture %s due to being suspended", exe.array);
+		goto hook_failed;
 	}
 	if (!open_target_process(gc)) {
-		return false;
+		info("cannot capture %s due to being unopenable", exe.array);
+		goto hook_failed;
 	}
 	if (!init_keepalive(gc)) {
-		return false;
+		info("cannot capture %s due to being no keepalive", exe.array);
+		goto hook_failed;
 	}
 	if (!init_pipe(gc)) {
-		return false;
+		info("cannot capture %s due to being pipeless", exe.array);
+		goto hook_failed;
 	}
-	if (!attempt_existing_hook(gc)) {
-		if (!inject_hook(gc)) {
-			return false;
-		}
+	if (!attempt_existing_hook(gc) && !inject_hook(gc)) {
+		info("cannot capture %s due to being unhooked", exe.array);
+		goto hook_failed;
 	}
 	if (!init_texture_mutexes(gc)) {
-		return false;
+		info("cannot capture %s due to being untextured", exe.array);
+		goto hook_failed;
 	}
 	if (!init_hook_info(gc)) {
-		return false;
+		info("cannot capture %s due to being uninfo", exe.array);
+		goto hook_failed;
 	}
 	if (!init_events(gc)) {
-		return false;
+		info("cannot capture %s due to being uneventful", exe.array);
+		goto hook_failed;
 	}
+	
+	dstr_free(&exe);
 
 	SetEvent(gc->hook_init);
 
@@ -1060,6 +1064,10 @@ static bool init_hook(struct game_capture *gc)
 	gc->active = true;
 	gc->retrying = 0;
 	return true;
+
+hook_failed:
+	dstr_free(&exe);
+	return false;
 }
 
 static void setup_window(struct game_capture *gc, HWND window)
