@@ -247,6 +247,7 @@ bool QSV_Encoder_Internal::InitParams(qsv_param_t *pParams)
 		m_mfxEncParams.mfx.ICQQuality = pParams->nICQQuality;
 		if (pParams->nTargetBitRate) {
 			m_mfxEncParams.mfx.TargetKbps = pParams->nTargetBitRate;
+			m_mfxEncParams.mfx.MaxKbps = pParams->nMaxBitRate;
 		}
 		break;
 	case MFX_RATECONTROL_LA:
