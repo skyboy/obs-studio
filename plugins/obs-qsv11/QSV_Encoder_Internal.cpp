@@ -245,12 +245,19 @@ bool QSV_Encoder_Internal::InitParams(qsv_param_t *pParams)
 		break;
 	case MFX_RATECONTROL_ICQ:
 		m_mfxEncParams.mfx.ICQQuality = pParams->nICQQuality;
+		if (pParams->nTargetBitRate) {
+			m_mfxEncParams.mfx.TargetKbps = pParams->nTargetBitRate;
+		}
 		break;
 	case MFX_RATECONTROL_LA:
 		m_mfxEncParams.mfx.TargetKbps = pParams->nTargetBitRate;
 		break;
 	case MFX_RATECONTROL_LA_ICQ:
 		m_mfxEncParams.mfx.ICQQuality = pParams->nICQQuality;
+		if (pParams->nTargetBitRate) {
+			m_mfxEncParams.mfx.TargetKbps = pParams->nTargetBitRate;
+			m_mfxEncParams.mfx.MaxKbps = pParams->nMaxBitRate;
+		}
 		break;
 	case MFX_RATECONTROL_LA_HRD:
 		m_mfxEncParams.mfx.TargetKbps = pParams->nTargetBitRate;
