@@ -268,8 +268,8 @@ static bool rate_control_modified(obs_properties_t *ppts, obs_property_t *p,
 
 	bool bVisible = astrcmpi(rate_control, "VCM") == 0 ||
 			astrcmpi(rate_control, "VBR") == 0 ||
-		   astrcmpi(rate_control, "LA_ICQ") == 0 ||
-		   astrcmpi(rate_control, "ICQ") == 0;
+			astrcmpi(rate_control, "LA_ICQ") == 0 ||
+			astrcmpi(rate_control, "ICQ") == 0;
 	p = obs_properties_get(ppts, "max_bitrate");
 	obs_property_set_visible(p, bVisible);
 
