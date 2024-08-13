@@ -159,11 +159,17 @@ private:
 	uint32_t outputCX = 0;
 	uint32_t outputCY = 0;
 
+	QPointer<QRadioButton> streamTrack[MAX_AUDIO_MIXES];
+
 	QPointer<QCheckBox> simpleVodTrack;
 
 	QPointer<QCheckBox> vodTrackCheckbox;
 	QPointer<QWidget> vodTrackContainer;
 	QPointer<QRadioButton> vodTrack[MAX_AUDIO_MIXES];
+
+	QPointer<QRadioButton> flvTrack[MAX_AUDIO_MIXES];
+
+	QPointer<QCheckBox> recTrack[MAX_AUDIO_MIXES];
 
 	QIcon hotkeyConflictIcon;
 
