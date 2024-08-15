@@ -189,7 +189,7 @@ OBSAdvAudioCtrl::OBSAdvAudioCtrl(QGridLayout *, obs_source_t *source_)
 				.arg(sourceName));
 	}
 
-	const char configName[13];
+	char configNameAr[13];
 	for (int i = 0; i < MAX_AUDIO_MIXES; i++) {
 		QPointer<QCheckBox> mixer1 = mixer[i];
 		snprintf(&configName, 13, "Track%iName", i);
