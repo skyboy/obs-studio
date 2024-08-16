@@ -245,7 +245,7 @@ bool QSV_Encoder_Internal::InitParams(qsv_param_t *pParams)
 		break;
 	case MFX_RATECONTROL_ICQ:
 		m_mfxEncParams.mfx.ICQQuality = pParams->nICQQuality;
-		if (pParams->nTargetBitRate) {
+		if (0 && pParams->nMaxBitRate) {
 			m_mfxEncParams.mfx.TargetKbps = pParams->nTargetBitRate;
 			m_mfxEncParams.mfx.MaxKbps = pParams->nMaxBitRate;
 		}
@@ -255,7 +255,9 @@ bool QSV_Encoder_Internal::InitParams(qsv_param_t *pParams)
 		break;
 	case MFX_RATECONTROL_LA_ICQ:
 		m_mfxEncParams.mfx.ICQQuality = pParams->nICQQuality;
-		if (pParams->nTargetBitRate) {
+		if (0 && pParams->nMaxBitRate) {
+			// https://intel.github.io/libvpl/latest/programming_guide/
+			// VPL_prg_encoding.html#external-bitrate-control
 			m_mfxEncParams.mfx.TargetKbps = pParams->nTargetBitRate;
 			m_mfxEncParams.mfx.MaxKbps = pParams->nMaxBitRate;
 		}
