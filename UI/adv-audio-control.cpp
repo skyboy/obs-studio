@@ -192,9 +192,9 @@ OBSAdvAudioCtrl::OBSAdvAudioCtrl(QGridLayout *, obs_source_t *source_)
 	char *configName = new char[13];
 	for (int i = 0; i < MAX_AUDIO_MIXES; i++) {
 		QPointer<QCheckBox> mixer1 = mixer[i];
-		snprintf(&configName, 13, "Track%iName", i);
+		snprintf(configName, 13, "Track%iName", i);
 		const char *name1 = config_get_string(main->Config(), "AdvOut",
-						      &configName);
+						      configName);
 		mixer1->setText(name1);
 		mixer1->setChecked(mixers & (1 << i));
 		mixer1->setAccessibleName(
