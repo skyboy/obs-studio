@@ -196,7 +196,7 @@ OBSAdvAudioCtrl::OBSAdvAudioCtrl(QGridLayout *, obs_source_t *source_)
 		const char *name1 =
 			config_get_string(main->Config(), "AdvOut", configName);
 		if (!name1) {
-			int val = (0x3030 | ((i / 10) % 10) | ((i % 10) * 256));
+			int val = (0x3030 | (((i+1) / 10) % 10) | (((i+1) % 10) * 256));
 			name1 = (const char *)&val; // leak?
 		}
 		mixer1->setText(name1);
