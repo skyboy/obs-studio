@@ -514,6 +514,9 @@ OBSBasicSettings::OBSBasicSettings(QWidget *parent)
 	HookWidget(ui->peakMeterType,        COMBO_CHANGED,  AUDIO_CHANGED);
 	HookWidget(ui->desktopAudioDevice1,  COMBO_CHANGED,  AUDIO_CHANGED);
 	HookWidget(ui->desktopAudioDevice2,  COMBO_CHANGED,  AUDIO_CHANGED);
+	HookWidget(ui->desktopAudioDevice3,  COMBO_CHANGED,  AUDIO_CHANGED);
+	HookWidget(ui->desktopAudioDevice4,  COMBO_CHANGED,  AUDIO_CHANGED);
+	HookWidget(ui->desktopAudioDevice5,  COMBO_CHANGED,  AUDIO_CHANGED);
 	HookWidget(ui->auxAudioDevice1,      COMBO_CHANGED,  AUDIO_CHANGED);
 	HookWidget(ui->auxAudioDevice2,      COMBO_CHANGED,  AUDIO_CHANGED);
 	HookWidget(ui->auxAudioDevice3,      COMBO_CHANGED,  AUDIO_CHANGED);
@@ -2313,6 +2316,9 @@ void OBSBasicSettings::LoadAudioDevices()
 			obs_properties_get(output_props, "device_id");
 		LoadListValues(ui->desktopAudioDevice1, outputs, 1);
 		LoadListValues(ui->desktopAudioDevice2, outputs, 2);
+		LoadListValues(ui->desktopAudioDevice3, outputs, 7);
+		LoadListValues(ui->desktopAudioDevice4, outputs, 8);
+		LoadListValues(ui->desktopAudioDevice5, outputs, 9);
 		obs_properties_destroy(output_props);
 	}
 
@@ -3675,6 +3681,12 @@ void OBSBasicSettings::SaveAudioSettings()
 	UpdateAudioDevice(true, ui->auxAudioDevice2, "Basic.AuxDevice2", 4);
 	UpdateAudioDevice(true, ui->auxAudioDevice3, "Basic.AuxDevice3", 5);
 	UpdateAudioDevice(true, ui->auxAudioDevice4, "Basic.AuxDevice4", 6);
+	UpdateAudioDevice(false, ui->desktopAudioDevice3,
+			  "Basic.DesktopDevice2", 7);
+	UpdateAudioDevice(false, ui->desktopAudioDevice4,
+			  "Basic.DesktopDevice2", 8);
+	UpdateAudioDevice(false, ui->desktopAudioDevice5,
+			  "Basic.DesktopDevice2", 9);
 	main->SaveProject();
 }
 
