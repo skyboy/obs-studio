@@ -3682,11 +3682,11 @@ void OBSBasicSettings::SaveAudioSettings()
 	UpdateAudioDevice(true, ui->auxAudioDevice3, "Basic.AuxDevice3", 5);
 	UpdateAudioDevice(true, ui->auxAudioDevice4, "Basic.AuxDevice4", 6);
 	UpdateAudioDevice(false, ui->desktopAudioDevice3,
-			  "Basic.DesktopDevice2", 7);
+			  "Basic.DesktopDevice3", 7);
 	UpdateAudioDevice(false, ui->desktopAudioDevice4,
-			  "Basic.DesktopDevice2", 8);
+			  "Basic.DesktopDevice4", 8);
 	UpdateAudioDevice(false, ui->desktopAudioDevice5,
-			  "Basic.DesktopDevice2", 9);
+			  "Basic.DesktopDevice5", 9);
 	main->SaveProject();
 }
 

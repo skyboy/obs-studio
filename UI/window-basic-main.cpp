@@ -510,6 +510,9 @@ static obs_data_t *GenerateSaveData(obs_data_array_t *sceneOrder,
 	SaveAudioDevice(AUX_AUDIO_2, 4, saveData, audioSources);
 	SaveAudioDevice(AUX_AUDIO_3, 5, saveData, audioSources);
 	SaveAudioDevice(AUX_AUDIO_4, 6, saveData, audioSources);
+	SaveAudioDevice(Str("DesktopAudioDevice3"), 7, saveData, audioSources);
+	SaveAudioDevice(Str("DesktopAudioDevice4"), 8, saveData, audioSources);
+	SaveAudioDevice(Str("DesktopAudioDevice5"), 9, saveData, audioSources);
 
 	/* -------------------------------- */
 	/* save non-group sources           */
@@ -1024,6 +1027,9 @@ void OBSBasic::LoadData(obs_data_t *data, const char *file)
 	LoadAudioDevice(AUX_AUDIO_2, 4, data);
 	LoadAudioDevice(AUX_AUDIO_3, 5, data);
 	LoadAudioDevice(AUX_AUDIO_4, 6, data);
+	LoadAudioDevice(Str("DesktopAudioDevice3"), 7, data);
+	LoadAudioDevice(Str("DesktopAudioDevice4"), 8, data);
+	LoadAudioDevice(Str("DesktopAudioDevice5"), 9, data);
 
 	if (!sources) {
 		sources = std::move(groups);
