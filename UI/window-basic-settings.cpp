@@ -404,13 +404,13 @@ OBSBasicSettings::OBSBasicSettings(QWidget *parent)
 		HookWidget(advFFTrack[i],  CHECK_CHANGED, OUTPUTS_CHANGED);
 		
 		snprintf(trackAccName, 64, "Basic.Settings.Output.Adv.Audio.Track%i", i);
-		streamTrack[i]=>setAccessibleName(
+		streamTrack[i]->setAccessibleName(
 			QTStr(trackAccName));
-		flvTrack[i]=>setAccessibleName(
+		flvTrack[i]->setAccessibleName(
 			QTStr("Basic.Settings.Output.Adv.Audio.Track1"));
-		recTrack[i]=>setAccessibleName(
+		recTrack[i]->setAccessibleName(
 			QTStr("Basic.Settings.Output.Adv.Audio.Track1"));
-		advFFTrack[i]=>setAccessibleName(
+		advFFTrack[i]->setAccessibleName(
 			QTStr("Basic.Settings.Output.Adv.Audio.Track1"));
 	}
 	delete[] trackAccName;
