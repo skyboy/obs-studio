@@ -342,7 +342,8 @@ static inline void HighlightGroupBoxLabel(QGroupBox *gb, QWidget *widget,
 
 void RestrictResetBitrates(QComboBox *box, int maxbitrate);
 
-void RestrictResetBitrates(QComboBox *simple, QPointer<QComboBox> *boxes, int maxbitrate);
+void RestrictResetBitrates(QComboBox *simple, QPointer<QComboBox> *boxes,
+			   int maxbitrate);
 
 void OBSBasicSettings::HookWidget(QWidget *widget, const char *signal,
 				  const char *slot)
@@ -2068,7 +2069,8 @@ void OBSBasicSettings::LoadAdvOutputAudioSettings()
 			config_get_uint(main->Config(), "AdvOut", trackName);
 		if (v) {
 			v = FindClosestAvailableAACBitrate(v);
-			SetComboByName(recTrackBitrate[i], std::to_string(v).c_str());
+			SetComboByName(recTrackBitrate[i],
+				       std::to_string(v).c_str());
 		}
 
 		snprintf(trackName, 16, "Track%iName", i + 1);
