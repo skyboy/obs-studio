@@ -4084,7 +4084,7 @@ void OBSBasicSettings::SpeakerLayoutChanged(int idx)
 		 * bitrates and save setting.
 		 */
 		ui->audioMsg_2->setText(QString());
-		RestrictResetBitrates(ui->simpleOutputABitrate, recTrackBitrate
+		RestrictResetBitrates(ui->simpleOutputABitrate, recTrackBitrate,
 			MAX_AUDIO_KBITRATE);
 
 		SaveCombo(ui->simpleOutputABitrate, "SimpleOutput", "ABitrate");
@@ -4150,7 +4150,7 @@ void RestrictResetBitrates(QComboBox *simple, QPointer<QComboBox> *boxes, int ma
 	if (simple)
 		RestrictResetBitrates(simple, maxbitrate);
 	for (int i = 0; i < MAX_AUDIO_MIXES; ++i)
-		RestrictResetBitrates(recTrackBitrate[i], maxbitrate);
+		RestrictResetBitrates(boxes[i], maxbitrate);
 }
 
 void OBSBasicSettings::VideoChangedRestart()
