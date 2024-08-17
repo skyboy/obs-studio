@@ -2051,7 +2051,7 @@ void OBSBasicSettings::LoadAdvOutputAudioSettings()
 		snprintf(trackName, 16, "Track%iBitrate", i);
 		uint32_t v = config_get_uint(main->Config(), "AdvOut", trackName);
 		v = FindClosestAvailableAACBitrate(v);
-		setComboByName(recTrackBitrate[i], std::to_string(v).c_str());
+		SetComboByName(recTrackBitrate[i], std::to_string(v).c_str());
 
 		snprintf(trackName, 16, "Track%iName", i);
 		recTrackName[i]->setText(config_get_string(main->Config(), "AdvOut",
