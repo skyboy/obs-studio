@@ -339,7 +339,9 @@ static inline void HighlightGroupBoxLabel(QGroupBox *gb, QWidget *widget,
 	}
 }
 
-void RestrictResetBitrates(initializer_list<QComboBox *> boxes, int maxbitrate);
+void RestrictResetBitrates(QComboBox *box, int maxbitrate);
+
+void RestrictResetBitrates(QComboBox *simple, QPointer<QComboBox> *boxes, int maxbitrate);
 
 void OBSBasicSettings::HookWidget(QWidget *widget, const char *signal,
 				  const char *slot)
