@@ -290,7 +290,7 @@ static void PopulateAACBitrates(QComboBox *box, vector<pair<QString, QString>> &
 	box->setCurrentText(currentText);
 }
 
-static void PopulateAACBitrates(QComboBox *box, Pointer<QComboBox> *boxes)
+static void PopulateAACBitrates(QComboBox *box, QPointer<QComboBox> *boxes)
 {
 	auto &bitrateMap = GetAACEncoderBitrateMap();
 	if (bitrateMap.empty())
@@ -4143,7 +4143,7 @@ void RestrictResetBitrates(QComboBox *box, int maxbitrate)
 	}
 }
 
-void RestrictResetBitrates(QComboBox *simple, Pointer<QComboBox> *boxes, int maxbitrate)
+void RestrictResetBitrates(QComboBox *simple, QPointer<QComboBox> *boxes, int maxbitrate)
 {
 	if (simple)
 		RestrictResetBitrates(simple, maxbitrate);
