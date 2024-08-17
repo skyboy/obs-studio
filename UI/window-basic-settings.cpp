@@ -2072,6 +2072,8 @@ void OBSBasicSettings::LoadAdvOutputAudioSettings()
 	delete[] trackName;
 }
 
+#define COLOR_TRACK(track) track->setStyleSheet(track->isChecked() ? "color: #00a000;" : "")
+
 void OBSBasicSettings::LoadOutputSettings()
 {
 	loading = true;
@@ -2101,6 +2103,13 @@ void OBSBasicSettings::LoadOutputSettings()
 		ui->advOutRecTypeContainer->setEnabled(false);
 		ui->advOutputAudioTracksTab->setEnabled(false);
 		ui->advNetworkGroupBox->setEnabled(false);
+	}
+	
+	for (int i = 0; i < MAX_AUDIO_MIXES; ++i) {
+		COLOR_TRACK(streamTrack[i]);
+		COLOR_TRACK(recTrack[i]);
+		COLOR_TRACK(flvTrack[i]);
+		COLOR_TRACK(advFFTrack[i]);
 	}
 
 	loading = false;
@@ -3433,6 +3442,13 @@ void OBSBasicSettings::SaveOutputSettings()
 	WriteJsonData(streamEncoderProps, "streamEncoder.json");
 	WriteJsonData(recordEncoderProps, "recordEncoder.json");
 	main->ResetOutputs();
+
+	for (int i = 0; i < MAX_AUDIO_MIXES; ++i) {
+		COLOR_TRACK(streamTrack[i]);
+		COLOR_TRACK(recTrack[i]);
+		COLOR_TRACK(flvTrack[i]);
+		COLOR_TRACK(advFFTrack[i]);
+	}
 }
 
 void OBSBasicSettings::SaveAudioSettings()
