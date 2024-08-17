@@ -30,6 +30,7 @@
 #include <QDirIterator>
 #include <QCheckBox>
 #include <QComboBox>
+#include <QFormLayout>
 #include <QPointer>
 #include <QRadioButton>
 #include <QVariant>
@@ -53,6 +54,8 @@
 #include <util/platform.h>
 #include <util/dstr.hpp>
 #include "ui-config.h"
+
+#define MAX_AUDIO_KBITRATE 512
 
 #define ENCODER_HIDE_FLAGS \
 	(OBS_ENCODER_CAP_DEPRECATED | OBS_ENCODER_CAP_INTERNAL)
@@ -386,29 +389,61 @@ OBSBasicSettings::OBSBasicSettings(QWidget *parent)
 	/* clang-format off */
 	char *trackAccName = new char[64];
 	for (int i = 0; i < MAX_AUDIO_MIXES; i++) {
+		snprintf(trackAccName, 64,
+			"Basic.Settings.Output.Adv.Audio.Track%i", i);
+
 		streamTrack[i] = new QRadioButton(QString::number(i + 1));
 		flvTrack[i] = new QRadioButton(QString::number(i + 1));
 		recTrack[i] = new QCheckBox(QString::number(i + 1));
 		advFFTrack[i] = new QCheckBox(QString::number(i + 1));
-		//recTrackName[i] = new QLineEdit();
-		//recTrackBitrate[i] = new QComboBox();
+		recTrackName[i] = new QLineEdit();
+		recTrackBitrate[i] = new QComboBox();
+		
+		QFormLayout nameGroup = new QFormLayout(QTStr(trackAccName));
+		nameGroup->setFieldGrowthPolicy(QFormLayout::AllNonFixedFieldsGrow);
+		nameGroup->setLabelAlignment(Qt::AlignRight | Qt::AlignTrailing | 
+			Qt::AlignVCenter);
+		nameGroup->setSizePolicy(QSizePolicy::Preferred,
+			QSizePolicy::Maximum);
+
+		nameGroup->addRow(QTStr("Basic.Settings.Output.AudioBitrate"),
+			recTrackBitrate[i]);
+		nameGroup->addRow(QTStr("Name"), recTrackName[i]);
 		
 		ui->advOutLayout->addWidget(streamTrack[i]);
 		ui->flvTrackLayout->addWidget(flvTrack[i]);
 		ui->advOutRecTrackLayout->addWidget(recTrack[i]);
 		ui->advOutFFTrackLayout->addWidget(advFFTrack[i]);
+		ui->advOutTrackNameLayout->addWidget(nameGroup);
 
-		HookWidget(streamTrack[i], CHECK_CHANGED, OUTPUTS_CHANGED);
-		HookWidget(flvTrack[i],    CHECK_CHANGED, OUTPUTS_CHANGED);
-		HookWidget(recTrack[i],    CHECK_CHANGED, OUTPUTS_CHANGED);
-		HookWidget(advFFTrack[i],  CHECK_CHANGED, OUTPUTS_CHANGED);
+		HookWidget(streamTrack[i],     CHECK_CHANGED, OUTPUTS_CHANGED);
+		HookWidget(flvTrack[i],        CHECK_CHANGED, OUTPUTS_CHANGED);
+		HookWidget(recTrack[i],        CHECK_CHANGED, OUTPUTS_CHANGED);
+		HookWidget(advFFTrack[i],      CHECK_CHANGED, OUTPUTS_CHANGED);
+		HookWidget(recTrackName[i],    EDIT_CHANGED,  OUTPUTS_CHANGED);
+		HookWidget(recTrackBitrate[i], COMBO_CHANGED, OUTPUTS_CHANGED);
 		
-		snprintf(trackAccName, 64,
-			"Basic.Settings.Output.Adv.Audio.Track%i", i);
 		streamTrack[i]->setAccessibleName(QTStr(trackAccName));
 		flvTrack[i]->setAccessibleName(QTStr(trackAccName));
 		recTrack[i]->setAccessibleName(QTStr(trackAccName));
 		advFFTrack[i]->setAccessibleName(QTStr(trackAccName));
+		
+		#define ADD_BITRATES(start, end, increment) \
+			for (int bitrate = start + increment; bitrate <= end; bitrate += increment) \
+				if (bitrate < MAX_AUDIO_KBITRATE) \
+					recTrackBitrate[i]->addItem(QString::number(bitrate)); \
+				else \
+					break;
+		recTrackBitrate[i]->addItem(QTStr("8"));
+		
+		ADD_BITRATES(0, 192, 16);
+
+		recTrackBitrate[i]->setCurrentIndex(recTrackBitrate[i]->count() - 1);
+
+		ADD_BITRATES(192, 320, 32);
+		ADD_BITRATES(320, 512, 64);
+		recTrackBitrate[i]->addItem(QString::number(MAX_AUDIO_KBITRATE));
+		#undef ADD_BITRATES
 	}
 	delete[] trackAccName;
 
@@ -1753,7 +1788,7 @@ void OBSBasicSettings::LoadSimpleOutputSettings()
 
 	// restrict list of bitrates when multichannel is OFF
 	if (!IsSurround(speakers))
-		RestrictResetBitrates({ui->simpleOutputABitrate}, 320);
+		RestrictResetBitrates({ui->simpleOutputABitrate}, MAX_AUDIO_KBITRATE);
 
 	SetComboByName(ui->simpleOutputABitrate,
 		       std::to_string(audioBitrate).c_str());
@@ -2068,7 +2103,7 @@ void OBSBasicSettings::LoadAdvOutputAudioSettings()
 			{ui->advOutTrack1Bitrate, ui->advOutTrack2Bitrate,
 			 ui->advOutTrack3Bitrate, ui->advOutTrack4Bitrate,
 			 ui->advOutTrack5Bitrate, ui->advOutTrack6Bitrate},
-			320);
+			MAX_AUDIO_KBITRATE);
 	}
 
 	SetComboByName(ui->advOutTrack1Bitrate,
@@ -4129,7 +4164,7 @@ void OBSBasicSettings::SpeakerLayoutChanged(int idx)
 			 ui->advOutTrack2Bitrate, ui->advOutTrack3Bitrate,
 			 ui->advOutTrack4Bitrate, ui->advOutTrack5Bitrate,
 			 ui->advOutTrack6Bitrate},
-			320);
+			MAX_AUDIO_KBITRATE);
 
 		SaveCombo(ui->simpleOutputABitrate, "SimpleOutput", "ABitrate");
 		SaveCombo(ui->advOutTrack1Bitrate, "AdvOut", "Track1Bitrate");

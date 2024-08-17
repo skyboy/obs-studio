@@ -23,6 +23,7 @@
 #include <QCheckBox>
 #include <QComboBox>
 #include <QPointer>
+#include <QLabel>
 #include <QRadioButton>
 #include <memory>
 #include <string>
@@ -35,7 +36,6 @@
 
 class OBSBasic;
 class QAbstractButton;
-class QLabel;
 class OBSPropertiesView;
 class OBSHotkeyWidget;
 
