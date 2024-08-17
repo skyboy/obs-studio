@@ -3413,9 +3413,9 @@ void OBSBasicSettings::SaveOutputSettings()
 	
 	char *trackName = new char[16];
 	for (int i = 0; i < MAX_AUDIO_MIXES; ++i) {
-		snprintf(trackName, 16, "Track%iBitrate", i);
+		snprintf(trackName, 16, "Track%iBitrate", i + 1);
 		SaveCombo(recTrackBitrate[i], "AdvOut", trackName);
-		snprintf(trackName, 16, "Track%iName", i);
+		snprintf(trackName, 16, "Track%iName", i + 1);
 		SaveEdit(recTrackName[i], "AdvOut", trackName);
 	}
 	delete[] trackName;
