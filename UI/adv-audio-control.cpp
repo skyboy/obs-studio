@@ -45,7 +45,7 @@ OBSAdvAudioCtrl::OBSAdvAudioCtrl(QGridLayout *, obs_source_t *source_)
 		monitoringType = new QComboBox();
 	syncOffset = new QSpinBox();
 	for (int i = 0; i < MAX_AUDIO_MIXES; i++) {
-		mixer[i] = new QCheckBox();
+		mixer[i] = new QCheckBox(QString::number(i + 1));
 	}
 
 	activateSignal.Connect(handler, "activate", OBSSourceActivated, this);
@@ -189,19 +189,17 @@ OBSAdvAudioCtrl::OBSAdvAudioCtrl(QGridLayout *, obs_source_t *source_)
 				.arg(sourceName));
 	}
 
-	char *configName = new char[13];
+	char *configName = new char[16];
 	for (int i = 0; i < MAX_AUDIO_MIXES; i++) {
 		QPointer<QCheckBox> mixer1 = mixer[i];
-		snprintf(configName, 13, "Track%iName", i + 1);
+		snprintf(configName, 16, "Track%iName", i + 1);
 		const char *name1 =
 			config_get_string(main->Config(), "AdvOut", configName);
-		if (!name1) {
-			int val = (0x3030 | (((i + 1) / 10) % 10) |
-				   (((i + 1) % 10) * 256));
-			name1 = (const char *)&val; // leak?
+		if (name1) {
+			mixer1->setText(name1);
 		}
-		mixer1->setText(name1);
 		mixer1->setChecked(mixers & (1 << i));
+		mixer1->setStyleSheet(mixer1->isChecked() ? "font-color: #00a000;" : "");
 		mixer1->setAccessibleName(
 			QTStr("Basic.Settings.Output.Adv.Audio.Track1"));
 	}
@@ -402,6 +400,7 @@ void OBSAdvAudioCtrl::SourceMixersChanged(uint32_t mixers)
 {
 	for (int i = 0; i < MAX_AUDIO_MIXES; i++) {
 		setCheckboxState(mixer[i], mixers & (1 << i));
+		mixer[i]->setStyleSheet(mixer[i]->isChecked() ? "font-color: #00a000;" : "");
 	}
 }
 
@@ -624,6 +623,7 @@ void OBSAdvAudioCtrl::mixerChanged(bool checked)
 	int i = 0;
 	QPointer box = sender();
 	while (i < MAX_AUDIO_MIXES) {
+		mixer[i]->setStyleSheet(mixer[i]->isChecked() ? "font-color: #00a000;" : "");
 		if (mixer[i] == box)
 			break;
 		++i;
