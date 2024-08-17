@@ -400,7 +400,7 @@ OBSBasicSettings::OBSBasicSettings(QWidget *parent)
 		advFFTrack[i] = new QCheckBox(QString::number(i + 1));
 		recTrackName[i] = new QLineEdit();
 		recTrackBitrate[i] = new QComboBox();
-		
+
 		QGroupBox *nameGroup = new QGroupBox(QTStr(trackAccName));
 		nameGroup->setSizePolicy(QSizePolicy::Preferred,
 			QSizePolicy::Maximum);
@@ -413,7 +413,7 @@ OBSBasicSettings::OBSBasicSettings(QWidget *parent)
 			recTrackBitrate[i]);
 		formGroup->addRow(QTStr("Name"), recTrackName[i]);
 		nameGroup->setLayout(formGroup);
-		
+
 		ui->advOutLayout->addWidget(streamTrack[i]);
 		ui->flvTrackLayout->addWidget(flvTrack[i]);
 		ui->advOutRecTrackLayout->addWidget(recTrack[i]);
@@ -426,12 +426,22 @@ OBSBasicSettings::OBSBasicSettings(QWidget *parent)
 		HookWidget(advFFTrack[i],      CHECK_CHANGED, OUTPUTS_CHANGED);
 		HookWidget(recTrackName[i],    EDIT_CHANGED,  OUTPUTS_CHANGED);
 		HookWidget(recTrackBitrate[i], COMBO_CHANGED, OUTPUTS_CHANGED);
-		
+
 		streamTrack[i]->setAccessibleName(QTStr(trackAccName));
 		flvTrack[i]->setAccessibleName(QTStr(trackAccName));
 		recTrack[i]->setAccessibleName(QTStr(trackAccName));
 		advFFTrack[i]->setAccessibleName(QTStr(trackAccName));
-		
+
+		snprintf(trackAccName, 64, "Track%iName", i + 1);
+		const char *name1 =
+			config_get_string(main->Config(), "AdvOut", trackAccName);
+		if (name1) {
+			streamTrack[i]->setText(name1);
+			flvTrack[i]->setText(name1);
+			recTrack[i]->setText(name1);
+			advFFTrack[i]->setText(name1);
+		}
+
 		#define ADD_BITRATES(start, end, increment) \
 			for (int bitrate = start + increment; bitrate <= end; bitrate += increment) \
 				if (bitrate < MAX_AUDIO_KBITRATE) \
@@ -439,7 +449,7 @@ OBSBasicSettings::OBSBasicSettings(QWidget *parent)
 				else \
 					break;
 		recTrackBitrate[i]->addItem(QTStr("8"));
-		
+
 		ADD_BITRATES(0, 192, 16);
 
 		recTrackBitrate[i]->setCurrentIndex(recTrackBitrate[i]->count() - 1);
