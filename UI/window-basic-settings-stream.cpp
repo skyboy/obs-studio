@@ -762,7 +762,7 @@ void OBSBasicSettings::UpdateVodTrackSetting()
 
 		snprintf(trackName, 16, "Track%iName", i + 1);
 		const char *name1 =
-			config_get_string(main->Config(), "AdvOut", trackAccName);
+			config_get_string(main->Config(), "AdvOut", trackName);
 		if (name1)
 			vodTrack[i]->setText(name1);
 	}
