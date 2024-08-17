@@ -410,7 +410,7 @@ OBSBasicSettings::OBSBasicSettings(QWidget *parent)
 		formGroup->addRow(QTStr("Basic.Settings.Output.AudioBitrate"),
 			recTrackBitrate[i]);
 		formGroup->addRow(QTStr("Name"), recTrackName[i]);
-		nameGroup->addLayout(formGroup);
+		nameGroup->setLayout(formGroup);
 		
 		ui->advOutLayout->addWidget(streamTrack[i]);
 		ui->flvTrackLayout->addWidget(flvTrack[i]);
