@@ -399,18 +399,18 @@ OBSBasicSettings::OBSBasicSettings(QWidget *parent)
 		recTrackName[i] = new QLineEdit();
 		recTrackBitrate[i] = new QComboBox();
 		
-		QGroupBox nameGroup(QTStr(trackAccName));
-		nameGroup.setSizePolicy(QSizePolicy::Preferred,
+		QGroupBox *nameGroup = new QGroupBox(QTStr(trackAccName));
+		nameGroup->setSizePolicy(QSizePolicy::Preferred,
 			QSizePolicy::Maximum);
-		QFormLayout formGroup();
-		formGroup.setFieldGrowthPolicy(QFormLayout::AllNonFixedFieldsGrow);
-		formGroup.setLabelAlignment(Qt::AlignRight | Qt::AlignTrailing | 
+		QFormLayout *formGroup = new QFormLayout();
+		formGroup->setFieldGrowthPolicy(QFormLayout::AllNonFixedFieldsGrow);
+		formGroup->setLabelAlignment(Qt::AlignRight | Qt::AlignTrailing | 
 			Qt::AlignVCenter);
 
-		formGroup.addRow(QTStr("Basic.Settings.Output.AudioBitrate"),
+		formGroup->addRow(QTStr("Basic.Settings.Output.AudioBitrate"),
 			recTrackBitrate[i]);
-		formGroup.addRow(QTStr("Name"), recTrackName[i]);
-		nameGroup.addLayout(formGroup);
+		formGroup->addRow(QTStr("Name"), recTrackName[i]);
+		nameGroup->addLayout(formGroup);
 		
 		ui->advOutLayout->addWidget(streamTrack[i]);
 		ui->flvTrackLayout->addWidget(flvTrack[i]);
