@@ -380,8 +380,25 @@ OBSBasicSettings::OBSBasicSettings(QWidget *parent)
 	ui->listWidget->setAttribute(Qt::WA_MacShowFocusRect, false);
 
 	/* clang-format off */
+	for (int i = 0; i < MAX_AUDIO_MIXES; i++) {
+		streamTrack[i] = new QRadioButton(QString::number(i + 1));
+		flvTrack[i] = new QRadioButton(QString::number(i + 1));
+		recTrack[i] = new QCheckBox(QString::number(i + 1));
+		//recTrackName[i] = new QLineEdit();
+		//recTrackBitrate[i] = new QComboBox();
+		
+		ui->advOutLayout->addWidget(streamTrack[i]);
+		ui->flvTrackLayout->addWidget(flvTrack[i]);
+		ui->advOutRecTrackLayout->addWidget(recTrack[i]);
+
+		HookWidget(streamTrack[i], CHECK_CHANGED, OUTPUTS_CHANGED);
+		HookWidget(flvTrack[i],    CHECK_CHANGED, OUTPUTS_CHANGED);
+		HookWidget(recTrack[i],    CHECK_CHANGED, OUTPUTS_CHANGED);
+	}
+
+	/* clang-format off */
 	HookWidget(ui->language,             COMBO_CHANGED,  GENERAL_CHANGED);
-	HookWidget(ui->theme, 		     COMBO_CHANGED,  GENERAL_CHANGED);
+	HookWidget(ui->theme,                COMBO_CHANGED,  GENERAL_CHANGED);
 	HookWidget(ui->enableAutoUpdates,    CHECK_CHANGED,  GENERAL_CHANGED);
 	HookWidget(ui->openStatsOnStartup,   CHECK_CHANGED,  GENERAL_CHANGED);
 	HookWidget(ui->hideOBSFromCapture,   CHECK_CHANGED,  GENERAL_CHANGED);

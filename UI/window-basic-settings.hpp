@@ -114,10 +114,10 @@ private:
 	bool videoChanged = false;
 	bool hotkeysChanged = false;
 	bool advancedChanged = false;
-	int pageIndex = 0;
 	bool loading = true;
 	bool forceAuthReload = false;
 	std::string savedTheme;
+	int pageIndex = 0;
 	int sampleRateIndex = 0;
 	int channelIndex = 0;
 
@@ -170,6 +170,9 @@ private:
 	QPointer<QRadioButton> flvTrack[MAX_AUDIO_MIXES];
 
 	QPointer<QCheckBox> recTrack[MAX_AUDIO_MIXES];
+
+	QPointer<QLineEdit> recTrackName[MAX_AUDIO_MIXES];
+	QPointer<QComboBox> recTrackBitrate[MAX_AUDIO_MIXES];
 
 	QIcon hotkeyConflictIcon;
 
