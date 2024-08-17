@@ -3296,7 +3296,7 @@ static void WriteJsonData(OBSPropertiesView *view, const char *path)
 }
 
 static void SaveTrackIndex(config_t *config, const char *section,
-			   const char *name, QPointer<QRadioButton>[] check)
+			   const char *name, QPointer<QRadioButton> *check)
 {
 	for (int i = 0; i < MAX_AUDIO_MIXES; ++i)
 		if (check[i]->isChecked())
