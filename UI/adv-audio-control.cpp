@@ -199,7 +199,7 @@ OBSAdvAudioCtrl::OBSAdvAudioCtrl(QGridLayout *, obs_source_t *source_)
 			mixer1->setText(name1);
 		}
 		mixer1->setChecked(mixers & (1 << i));
-		mixer1->setStyleSheet(mixer1->isChecked() ? "font-color: #00a000;" : "");
+		mixer1->setStyleSheet(mixer1->isChecked() ? "color: #00a000;" : "");
 		mixer1->setAccessibleName(
 			QTStr("Basic.Settings.Output.Adv.Audio.Track1"));
 	}
@@ -400,7 +400,7 @@ void OBSAdvAudioCtrl::SourceMixersChanged(uint32_t mixers)
 {
 	for (int i = 0; i < MAX_AUDIO_MIXES; i++) {
 		setCheckboxState(mixer[i], mixers & (1 << i));
-		mixer[i]->setStyleSheet(mixer[i]->isChecked() ? "font-color: #00a000;" : "");
+		mixer[i]->setStyleSheet(mixer[i]->isChecked() ? "color: #00a000;" : "");
 	}
 }
 
@@ -623,7 +623,7 @@ void OBSAdvAudioCtrl::mixerChanged(bool checked)
 	int i = 0;
 	QPointer box = sender();
 	while (i < MAX_AUDIO_MIXES) {
-		mixer[i]->setStyleSheet(mixer[i]->isChecked() ? "font-color: #00a000;" : "");
+		mixer[i]->setStyleSheet(mixer[i]->isChecked() ? "color: #00a000;" : "");
 		if (mixer[i] == box)
 			break;
 		++i;
