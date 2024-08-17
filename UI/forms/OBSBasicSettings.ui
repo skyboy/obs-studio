@@ -2041,51 +2041,6 @@
                               <property name="bottomMargin">
                                <number>0</number>
                               </property>
-                              <item>
-                               <widget class="QRadioButton" name="advOutTrack1">
-                                <property name="text">
-                                 <string notr="true">1</string>
-                                </property>
-                                <property name="checked">
-                                 <bool>true</bool>
-                                </property>
-                               </widget>
-                              </item>
-                              <item>
-                               <widget class="QRadioButton" name="advOutTrack2">
-                                <property name="text">
-                                 <string notr="true">2</string>
-                                </property>
-                               </widget>
-                              </item>
-                              <item>
-                               <widget class="QRadioButton" name="advOutTrack3">
-                                <property name="text">
-                                 <string notr="true">3</string>
-                                </property>
-                               </widget>
-                              </item>
-                              <item>
-                               <widget class="QRadioButton" name="advOutTrack4">
-                                <property name="text">
-                                 <string notr="true">4</string>
-                                </property>
-                               </widget>
-                              </item>
-                              <item>
-                               <widget class="QRadioButton" name="advOutTrack5">
-                                <property name="text">
-                                 <string notr="true">5</string>
-                                </property>
-                               </widget>
-                              </item>
-                              <item>
-                               <widget class="QRadioButton" name="advOutTrack6">
-                                <property name="text">
-                                 <string notr="true">6</string>
-                                </property>
-                               </widget>
-                              </item>
                              </layout>
                             </widget>
                            </item>
@@ -2443,48 +2398,6 @@
                                 <property name="bottomMargin">
                                  <number>0</number>
                                 </property>
-                                <item>
-                                 <widget class="QCheckBox" name="advOutRecTrack1">
-                                  <property name="text">
-                                   <string notr="true">1</string>
-                                  </property>
-                                 </widget>
-                                </item>
-                                <item>
-                                 <widget class="QCheckBox" name="advOutRecTrack2">
-                                  <property name="text">
-                                   <string notr="true">2</string>
-                                  </property>
-                                 </widget>
-                                </item>
-                                <item>
-                                 <widget class="QCheckBox" name="advOutRecTrack3">
-                                  <property name="text">
-                                   <string notr="true">3</string>
-                                  </property>
-                                 </widget>
-                                </item>
-                                <item>
-                                 <widget class="QCheckBox" name="advOutRecTrack4">
-                                  <property name="text">
-                                   <string notr="true">4</string>
-                                  </property>
-                                 </widget>
-                                </item>
-                                <item>
-                                 <widget class="QCheckBox" name="advOutRecTrack5">
-                                  <property name="text">
-                                   <string notr="true">5</string>
-                                  </property>
-                                 </widget>
-                                </item>
-                                <item>
-                                 <widget class="QCheckBox" name="advOutRecTrack6">
-                                  <property name="text">
-                                   <string notr="true">6</string>
-                                  </property>
-                                 </widget>
-                                </item>
                                </layout>
                               </widget>
                               <widget class="QWidget" name="flvTracks">
@@ -2498,48 +2411,18 @@
                                  </rect>
                                 </property>
                                 <layout class="QHBoxLayout" name="flvTrackLayout">
-                                 <item>
-                                  <widget class="QRadioButton" name="flvTrack1">
-                                   <property name="text">
-                                    <string>1</string>
-                                   </property>
-                                  </widget>
-                                 </item>
-                                 <item>
-                                  <widget class="QRadioButton" name="flvTrack2">
-                                   <property name="text">
-                                    <string>2</string>
-                                   </property>
-                                  </widget>
-                                 </item>
-                                 <item>
-                                  <widget class="QRadioButton" name="flvTrack3">
-                                   <property name="text">
-                                    <string>3</string>
-                                   </property>
-                                  </widget>
-                                 </item>
-                                 <item>
-                                  <widget class="QRadioButton" name="flvTrack4">
-                                   <property name="text">
-                                    <string>4</string>
-                                   </property>
-                                  </widget>
-                                 </item>
-                                 <item>
-                                  <widget class="QRadioButton" name="flvTrack5">
-                                   <property name="text">
-                                    <string>5</string>
-                                   </property>
-                                  </widget>
-                                 </item>
-                                 <item>
-                                  <widget class="QRadioButton" name="flvTrack6">
-                                   <property name="text">
-                                    <string>6</string>
-                                   </property>
-                                  </widget>
-                                 </item>
+                                 <property name="leftMargin">
+                                  <number>0</number>
+                                 </property>
+                                 <property name="topMargin">
+                                  <number>0</number>
+                                 </property>
+                                 <property name="rightMargin">
+                                  <number>0</number>
+                                 </property>
+                                 <property name="bottomMargin">
+                                  <number>0</number>
+                                 </property>
                                 </layout>
                                </widget>
                               </widget>
@@ -2923,51 +2806,6 @@
                             <property name="bottomMargin">
                              <number>0</number>
                             </property>
-                            <item>
-                             <widget class="QCheckBox" name="advOutFFTrack1">
-                              <property name="text">
-                               <string notr="true">1</string>
-                              </property>
-                              <property name="checked">
-                               <bool>true</bool>
-                              </property>
-                             </widget>
-                            </item>
-                            <item>
-                             <widget class="QCheckBox" name="advOutFFTrack2">
-                              <property name="text">
-                               <string notr="true">2</string>
-                              </property>
-                             </widget>
-                            </item>
-                            <item>
-                             <widget class="QCheckBox" name="advOutFFTrack3">
-                              <property name="text">
-                               <string notr="true">3</string>
-                              </property>
-                             </widget>
-                            </item>
-                            <item>
-                             <widget class="QCheckBox" name="advOutFFTrack4">
-                              <property name="text">
-                               <string notr="true">4</string>
-                              </property>
-                             </widget>
-                            </item>
-                            <item>
-                             <widget class="QCheckBox" name="advOutFFTrack5">
-                              <property name="text">
-                               <string notr="true">5</string>
-                              </property>
-                             </widget>
-                            </item>
-                            <item>
-                             <widget class="QCheckBox" name="advOutFFTrack6">
-                              <property name="text">
-                               <string notr="true">6</string>
-                              </property>
-                             </widget>
-                            </item>
                            </layout>
                           </widget>
                          </item>
@@ -5784,12 +5622,6 @@
   <tabstop>simpleRBSecMax</tabstop>
   <tabstop>simpleRBMegsMax</tabstop>
   <tabstop>advOutTabs</tabstop>
-  <tabstop>advOutTrack1</tabstop>
-  <tabstop>advOutTrack2</tabstop>
-  <tabstop>advOutTrack3</tabstop>
-  <tabstop>advOutTrack4</tabstop>
-  <tabstop>advOutTrack5</tabstop>
-  <tabstop>advOutTrack6</tabstop>
   <tabstop>advOutEncoder</tabstop>
   <tabstop>advOutUseRescale</tabstop>
   <tabstop>advOutRescale</tabstop>
@@ -5798,18 +5630,6 @@
   <tabstop>advOutRecPathBrowse</tabstop>
   <tabstop>advOutNoSpace</tabstop>
   <tabstop>advOutRecFormat</tabstop>
-  <tabstop>flvTrack1</tabstop>
-  <tabstop>flvTrack2</tabstop>
-  <tabstop>flvTrack3</tabstop>
-  <tabstop>flvTrack4</tabstop>
-  <tabstop>flvTrack5</tabstop>
-  <tabstop>flvTrack6</tabstop>
-  <tabstop>advOutRecTrack1</tabstop>
-  <tabstop>advOutRecTrack2</tabstop>
-  <tabstop>advOutRecTrack3</tabstop>
-  <tabstop>advOutRecTrack4</tabstop>
-  <tabstop>advOutRecTrack5</tabstop>
-  <tabstop>advOutRecTrack6</tabstop>
   <tabstop>advOutRecEncoder</tabstop>
   <tabstop>advOutRecUseRescale</tabstop>
   <tabstop>advOutRecRescale</tabstop>
@@ -5828,12 +5648,6 @@
   <tabstop>advOutFFVEncoder</tabstop>
   <tabstop>advOutFFVCfg</tabstop>
   <tabstop>advOutFFABitrate</tabstop>
-  <tabstop>advOutFFTrack1</tabstop>
-  <tabstop>advOutFFTrack2</tabstop>
-  <tabstop>advOutFFTrack3</tabstop>
-  <tabstop>advOutFFTrack4</tabstop>
-  <tabstop>advOutFFTrack5</tabstop>
-  <tabstop>advOutFFTrack6</tabstop>
   <tabstop>advOutFFAEncoder</tabstop>
   <tabstop>advOutFFACfg</tabstop>
   <tabstop>advOutFFURL</tabstop>
@@ -5857,6 +5671,9 @@
   <tabstop>channelSetup</tabstop>
   <tabstop>desktopAudioDevice1</tabstop>
   <tabstop>desktopAudioDevice2</tabstop>
+  <tabstop>desktopAudioDevice3</tabstop>
+  <tabstop>desktopAudioDevice4</tabstop>
+  <tabstop>desktopAudioDevice5</tabstop>
   <tabstop>auxAudioDevice1</tabstop>
   <tabstop>auxAudioDevice2</tabstop>
   <tabstop>auxAudioDevice3</tabstop>

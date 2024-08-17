@@ -174,6 +174,8 @@ private:
 	QPointer<QLineEdit> recTrackName[MAX_AUDIO_MIXES];
 	QPointer<QComboBox> recTrackBitrate[MAX_AUDIO_MIXES];
 
+	QPointer<QCheckBox> advFFTrack[MAX_AUDIO_MIXES];
+
 	QIcon hotkeyConflictIcon;
 
 	void SaveCombo(QComboBox *widget, const char *section,
