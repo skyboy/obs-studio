@@ -2048,12 +2048,14 @@ void OBSBasicSettings::LoadAdvOutputAudioSettings()
 
 	char *trackName = new char[16];
 	for (int i = 0; i < MAX_AUDIO_MIXES; ++i) {
-		snprintf(trackName, 16, "Track%iBitrate", i);
+		snprintf(trackName, 16, "Track%iBitrate", i + 1);
 		uint32_t v = config_get_uint(main->Config(), "AdvOut", trackName);
-		v = FindClosestAvailableAACBitrate(v);
-		SetComboByName(recTrackBitrate[i], std::to_string(v).c_str());
+		if (v) {
+			v = FindClosestAvailableAACBitrate(v);
+			SetComboByName(recTrackBitrate[i], std::to_string(v).c_str());
+		}
 
-		snprintf(trackName, 16, "Track%iName", i);
+		snprintf(trackName, 16, "Track%iName", i + 1);
 		recTrackName[i]->setText(config_get_string(main->Config(), "AdvOut",
 			trackName));
 	}
