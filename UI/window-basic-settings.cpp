@@ -276,7 +276,7 @@ void OBSBasicSettings::ToggleDisableAero(bool checked)
 }
 #endif
 
-static void PopulateAACBitrates(QComboBox *box, map<int, std::string> &bitrateMap)
+static void PopulateAACBitrates(QComboBox *box, vector<pair<QString, QString>> &pairs)
 {
 	QString currentText = box->currentText();
 	box->clear();
@@ -302,9 +302,9 @@ static void PopulateAACBitrates(QComboBox *box, Pointer<QComboBox> *boxes)
 			QString::number(entry.first),
 			obs_encoder_get_display_name(entry.second.c_str()));
 
-	PopulateAACBitrates(box, bitrateMap);
+	PopulateAACBitrates(box, pairs);
 	for (int i = 0; i < MAX_AUDIO_MIXES; ++i)
-		PopulateAACBitrates(boxes[i], bitrateMap);
+		PopulateAACBitrates(boxes[i], pairs);
 }
 
 static std::tuple<int, int> aspect_ratio(int cx, int cy)
