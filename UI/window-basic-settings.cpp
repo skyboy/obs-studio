@@ -2110,6 +2110,8 @@ void OBSBasicSettings::LoadOutputSettings()
 		COLOR_TRACK(recTrack[i]);
 		COLOR_TRACK(flvTrack[i]);
 		COLOR_TRACK(advFFTrack[i]);
+		if (vodTrackCheckbox)
+			COLOR_TRACK(vodTrack[i]);
 	}
 
 	loading = false;
@@ -3448,6 +3450,8 @@ void OBSBasicSettings::SaveOutputSettings()
 		COLOR_TRACK(recTrack[i]);
 		COLOR_TRACK(flvTrack[i]);
 		COLOR_TRACK(advFFTrack[i]);
+		if (vodTrackCheckbox)
+			COLOR_TRACK(vodTrack[i]);
 	}
 }
 

@@ -751,13 +751,22 @@ void OBSBasicSettings::UpdateVodTrackSetting()
 
 	vodTrackContainer = new QWidget(this);
 	QHBoxLayout *vodTrackLayout = new QHBoxLayout();
+
+	char *trackName = new char[16];
 	for (int i = 0; i < MAX_AUDIO_MIXES; i++) {
 		vodTrack[i] = new QRadioButton(QString::number(i + 1));
 		vodTrackLayout->addWidget(vodTrack[i]);
 
 		HookWidget(vodTrack[i], SIGNAL(clicked(bool)),
 			   SLOT(OutputsChanged()));
+
+		snprintf(trackName, 16, "Track%iName", i + 1);
+		const char *name1 =
+			config_get_string(main->Config(), "AdvOut", trackAccName);
+		if (name1)
+			vodTrack[i]->setText(name1);
 	}
+	delete[] trackName;
 
 	HookWidget(vodTrackCheckbox, SIGNAL(clicked(bool)),
 		   SLOT(OutputsChanged()));
