@@ -28,6 +28,10 @@
 #include <QMessageBox>
 #include <QCloseEvent>
 #include <QDirIterator>
+#include <QCheckBox>
+#include <QComboBox>
+#include <QPointer>
+#include <QRadioButton>
 #include <QVariant>
 #include <QTreeView>
 #include <QScreen>
@@ -397,7 +401,7 @@ OBSBasicSettings::OBSBasicSettings(QWidget *parent)
 		HookWidget(streamTrack[i], CHECK_CHANGED, OUTPUTS_CHANGED);
 		HookWidget(flvTrack[i],    CHECK_CHANGED, OUTPUTS_CHANGED);
 		HookWidget(recTrack[i],    CHECK_CHANGED, OUTPUTS_CHANGED);
-		HookWidget(advFFTrack[i],    CHECK_CHANGED, OUTPUTS_CHANGED);
+		HookWidget(advFFTrack[i],  CHECK_CHANGED, OUTPUTS_CHANGED);
 		
 		snprintf(trackAccName, 64, "Basic.Settings.Output.Adv.Audio.Track%i", i);
 		streamTrack[i]=>setAccessibleName(
@@ -3292,7 +3296,7 @@ static void WriteJsonData(OBSPropertiesView *view, const char *path)
 }
 
 static void SaveTrackIndex(config_t *config, const char *section,
-			   const char *name, QPointer<QAbstractButton>[] *check)
+			   const char *name, QPointer<QRadioButton>[] *check)
 {
 	for (int i = 0; i < MAX_AUDIO_MIXES; ++i)
 		if (check[i]->isChecked())
