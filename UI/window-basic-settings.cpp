@@ -399,10 +399,10 @@ OBSBasicSettings::OBSBasicSettings(QWidget *parent)
 		recTrackName[i] = new QLineEdit();
 		recTrackBitrate[i] = new QComboBox();
 		
-		QGroupBox nameGroup = new QGroupBox(QTStr(trackAccName));
+		QGroupBox nameGroup(QTStr(trackAccName));
 		nameGroup.setSizePolicy(QSizePolicy::Preferred,
 			QSizePolicy::Maximum);
-		QFormLayout formGroup = new QFormLayout();
+		QFormLayout formGroup();
 		formGroup.setFieldGrowthPolicy(QFormLayout::AllNonFixedFieldsGrow);
 		formGroup.setLabelAlignment(Qt::AlignRight | Qt::AlignTrailing | 
 			Qt::AlignVCenter);
