@@ -276,7 +276,8 @@ void OBSBasicSettings::ToggleDisableAero(bool checked)
 }
 #endif
 
-static void PopulateAACBitrates(QComboBox *box, vector<pair<QString, QString>> &pairs)
+static void PopulateAACBitrates(QComboBox *box,
+				vector<pair<QString, QString>> &pairs)
 {
 	QString currentText = box->currentText();
 	box->clear();
@@ -1773,7 +1774,8 @@ void OBSBasicSettings::LoadSimpleOutputSettings()
 
 	// restrict list of bitrates when multichannel is OFF
 	if (!IsSurround(speakers))
-		RestrictResetBitrates({ui->simpleOutputABitrate}, MAX_AUDIO_KBITRATE);
+		RestrictResetBitrates({ui->simpleOutputABitrate},
+				      MAX_AUDIO_KBITRATE);
 
 	SetComboByName(ui->simpleOutputABitrate,
 		       std::to_string(audioBitrate).c_str());
@@ -1810,7 +1812,8 @@ void OBSBasicSettings::LoadAdvOutputStreamingSettings()
 	bool rescale = config_get_bool(main->Config(), "AdvOut", "Rescale");
 	const char *rescaleRes =
 		config_get_string(main->Config(), "AdvOut", "RescaleRes");
-	uint32_t trackIndex = config_get_uint(main->Config(), "AdvOut", "TrackIndex");
+	uint32_t trackIndex =
+		config_get_uint(main->Config(), "AdvOut", "TrackIndex");
 
 	ui->advOutUseRescale->setChecked(rescale);
 	ui->advOutRescale->setEnabled(rescale);
@@ -1904,8 +1907,10 @@ void OBSBasicSettings::LoadAdvOutputRecordingSettings()
 		config_get_string(main->Config(), "AdvOut", "RecRescaleRes");
 	const char *muxCustom =
 		config_get_string(main->Config(), "AdvOut", "RecMuxerCustom");
-	uint32_t tracks = config_get_uint(main->Config(), "AdvOut", "RecTracks");
-	uint32_t trackIndex = config_get_uint(main->Config(), "AdvOut", "FLVTrack");
+	uint32_t tracks =
+		config_get_uint(main->Config(), "AdvOut", "RecTracks");
+	uint32_t trackIndex =
+		config_get_uint(main->Config(), "AdvOut", "FLVTrack");
 
 	int typeIndex = (astrcmpi(type, "FFmpeg") == 0) ? 1 : 0;
 	ui->advOutRecType->setCurrentIndex(typeIndex);
@@ -2053,26 +2058,28 @@ void OBSBasicSettings::LoadAdvOutputAudioSettings()
 	// restrict list of bitrates when multichannel is OFF
 	if (!IsSurround(speakers)) {
 		RestrictResetBitrates(ui->simpleOutputABitrate, recTrackBitrate,
-			MAX_AUDIO_KBITRATE);
+				      MAX_AUDIO_KBITRATE);
 	}
 
 	char *trackName = new char[16];
 	for (int i = 0; i < MAX_AUDIO_MIXES; ++i) {
 		snprintf(trackName, 16, "Track%iBitrate", i + 1);
-		uint32_t v = config_get_uint(main->Config(), "AdvOut", trackName);
+		uint32_t v =
+			config_get_uint(main->Config(), "AdvOut", trackName);
 		if (v) {
 			v = FindClosestAvailableAACBitrate(v);
 			SetComboByName(recTrackBitrate[i], std::to_string(v).c_str());
 		}
 
 		snprintf(trackName, 16, "Track%iName", i + 1);
-		recTrackName[i]->setText(config_get_string(main->Config(), "AdvOut",
-			trackName));
+		recTrackName[i]->setText(
+			config_get_string(main->Config(), "AdvOut", trackName));
 	}
 	delete[] trackName;
 }
 
-#define COLOR_TRACK(track) track->setStyleSheet(track->isChecked() ? "color: #00a000;" : "")
+#define COLOR_TRACK(track) \
+	track->setStyleSheet(track->isChecked() ? "color: #00a000;" : "")
 
 void OBSBasicSettings::LoadOutputSettings()
 {
@@ -3395,7 +3402,8 @@ void OBSBasicSettings::SaveOutputSettings()
 	}
 	config_set_uint(main->Config(), "AdvOut", "RecTracks", rec_mixers);
 
-	config_set_uint(main->Config(), "AdvOut", "FLVTrack", CurrentFLVTrack());
+	config_set_uint(main->Config(), "AdvOut", "FLVTrack",
+			CurrentFLVTrack());
 
 	config_set_bool(main->Config(), "AdvOut", "FFOutputToFile",
 			ui->advOutFFType->currentIndex() == 0 ? true : false);
@@ -3434,7 +3442,8 @@ void OBSBasicSettings::SaveOutputSettings()
 	if (vodTrackCheckbox) {
 		SaveCheckBox(simpleVodTrack, "SimpleOutput", "VodTrackEnabled");
 		SaveCheckBox(vodTrackCheckbox, "AdvOut", "VodTrackEnabled");
-		SaveTrackIndex(main->Config(), "AdvOut", "VodTrackIndex", vodTrack);
+		SaveTrackIndex(main->Config(), "AdvOut", "VodTrackIndex",
+			       vodTrack);
 	}
 
 	SaveCheckBox(ui->advReplayBuf, "AdvOut", "RecRB");
@@ -4117,7 +4126,7 @@ void OBSBasicSettings::SpeakerLayoutChanged(int idx)
 		 */
 		ui->audioMsg_2->setText(QString());
 		RestrictResetBitrates(ui->simpleOutputABitrate, recTrackBitrate,
-			MAX_AUDIO_KBITRATE);
+				      MAX_AUDIO_KBITRATE);
 
 		SaveCombo(ui->simpleOutputABitrate, "SimpleOutput", "ABitrate");
 		
@@ -4158,8 +4167,8 @@ void RestrictResetBitrates(QComboBox *box, int maxbitrate)
 	int idx = box->currentIndex();
 	int max_bitrate = FindClosestAvailableAACBitrate(maxbitrate);
 	int count = box->count();
-	int max_idx = box->findText(
-		QT_UTF8(std::to_string(max_bitrate).c_str()));
+	int max_idx =
+		box->findText(QT_UTF8(std::to_string(max_bitrate).c_str()));
 
 	for (int i = (count - 1); i > max_idx; i--)
 		box->removeItem(i);
@@ -4167,8 +4176,8 @@ void RestrictResetBitrates(QComboBox *box, int maxbitrate)
 	if (idx > max_idx) {
 		int default_bitrate =
 			FindClosestAvailableAACBitrate(maxbitrate / 2);
-		int default_idx = box->findText(QT_UTF8(
-			std::to_string(default_bitrate).c_str()));
+		int default_idx = box->findText(
+			QT_UTF8(std::to_string(default_bitrate).c_str()));
 
 		box->setCurrentIndex(default_idx);
 		box->setProperty("changed", QVariant(true));
@@ -4177,7 +4186,8 @@ void RestrictResetBitrates(QComboBox *box, int maxbitrate)
 	}
 }
 
-void RestrictResetBitrates(QComboBox *simple, QPointer<QComboBox> *boxes, int maxbitrate)
+void RestrictResetBitrates(QComboBox *simple, QPointer<QComboBox> *boxes,
+			   int maxbitrate)
 {
 	if (simple)
 		RestrictResetBitrates(simple, maxbitrate);
@@ -4465,7 +4475,8 @@ void OBSBasicSettings::UpdateAdvOutStreamDelayEstimate()
 		return;
 
 	OBSData settings = streamEncoderProps->GetSettings();
-	uint32_t trackIndex = config_get_uint(main->Config(), "AdvOut", "TrackIndex");
+	uint32_t trackIndex =
+		config_get_uint(main->Config(), "AdvOut", "TrackIndex");
 	if (trackIndex < 1 || trackIndex > MAX_AUDIO_MIXES)
 		trackIndex = 1;
 	QString aBitrateText = recTrackBitrate[trackIndex - 1]->currentText();
