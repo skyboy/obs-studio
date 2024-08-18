@@ -2886,9 +2886,6 @@
                          <verstretch>0</verstretch>
                         </sizepolicy>
                        </property>
-                       <property name="columnCount">
-                        <number>1</number>
-                       </property>
                        <layout class="QVBoxLayout" name="advOutTrackNameLayout">
                        </layout>
                       </widget>
