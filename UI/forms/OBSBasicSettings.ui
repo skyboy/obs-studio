@@ -2888,9 +2888,9 @@
                        </property>
                        <widget class="QFrame" name="widget_3">
                         <property name="sizePolicy">
-                         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
                           <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
+                          <verstretch>1</verstretch>
                          </sizepolicy>
                         </property>
                         <layout class="QVBoxLayout" name="advOutTrackNameLayout">
