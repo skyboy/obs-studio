@@ -2893,6 +2893,14 @@
                           <verstretch>1</verstretch>
                          </sizepolicy>
                         </property>
+                        <property name="geometry">
+                         <rect>
+                          <x>0</x>
+                          <y>0</y>
+                          <width>820</width>
+                          <height>670</height>
+                         </rect>
+                        </property>
                         <layout class="QVBoxLayout" name="advOutTrackNameLayout">
                         </layout>
                        </widget>
