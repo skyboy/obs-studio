@@ -2898,7 +2898,7 @@
                           <x>0</x>
                           <y>0</y>
                           <width>800</width>
-                          <height>760</height>
+                          <height>1000</height>
                          </rect>
                         </property>
                         <layout class="QVBoxLayout" name="advOutTrackNameLayout">
