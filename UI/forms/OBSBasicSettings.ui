@@ -2879,12 +2879,15 @@
                       <number>0</number>
                      </property>
                      <item>
-                      <widget class="QFrame" name="widget_3">
+                      <widget class="QTableWidget" name="widget_3">
                        <property name="sizePolicy">
                         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                          <horstretch>0</horstretch>
                          <verstretch>0</verstretch>
                         </sizepolicy>
+                       </property>
+                       <property name="columnCount">
+                        <number>1</number>
                        </property>
                        <layout class="QVBoxLayout" name="advOutTrackNameLayout">
                        </layout>
