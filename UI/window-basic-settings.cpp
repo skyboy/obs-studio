@@ -406,6 +406,7 @@ OBSBasicSettings::OBSBasicSettings(QWidget *parent)
 		QGroupBox *nameGroup = new QGroupBox(QTStr(trackAccName));
 		nameGroup->setSizePolicy(QSizePolicy::Preferred,
 			QSizePolicy::Maximum);
+		nameGroup->setMinimumSize(600, 90);
 		QFormLayout *formGroup = new QFormLayout();
 		formGroup->setFieldGrowthPolicy(QFormLayout::AllNonFixedFieldsGrow);
 		formGroup->setLabelAlignment(Qt::AlignRight | Qt::AlignTrailing | 
