@@ -4131,7 +4131,7 @@ void OBSBasicSettings::SpeakerLayoutChanged(int idx)
 				      MAX_AUDIO_KBITRATE);
 
 		SaveCombo(ui->simpleOutputABitrate, "SimpleOutput", "ABitrate");
-		
+
 		char *trackName = new char[16];
 		for (int i = 0; i < MAX_AUDIO_MIXES; ++i) {
 			snprintf(trackName, 16, "Track%iBitrate", i);
