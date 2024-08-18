@@ -42,7 +42,7 @@ OBSAdvAudioCtrl::OBSAdvAudioCtrl(QGridLayout *, obs_source_t *source_)
 	forceMono = new QCheckBox();
 	balance = new BalanceSlider();
 	if (obs_audio_monitoring_available())
-		monitoringType = new QComboBox();
+		monitoringType = new QCheckBox();
 	syncOffset = new QSpinBox();
 	for (int i = 0; i < MAX_AUDIO_MIXES; i++) {
 		mixer[i] = new QCheckBox(QString::number(i + 1));
@@ -173,17 +173,8 @@ OBSAdvAudioCtrl::OBSAdvAudioCtrl(QGridLayout *, obs_source_t *source_)
 
 	int idx;
 	if (obs_audio_monitoring_available()) {
-		monitoringType->addItem(QTStr("Basic.AdvAudio.Monitoring.None"),
-					(int)OBS_MONITORING_TYPE_NONE);
-		monitoringType->addItem(
-			QTStr("Basic.AdvAudio.Monitoring.MonitorOnly"),
-			(int)OBS_MONITORING_TYPE_MONITOR_ONLY);
-		monitoringType->addItem(
-			QTStr("Basic.AdvAudio.Monitoring.Both"),
-			(int)OBS_MONITORING_TYPE_MONITOR_AND_OUTPUT);
 		int mt = (int)obs_source_get_monitoring_type(source);
-		idx = monitoringType->findData(mt);
-		monitoringType->setCurrentIndex(idx);
+		monitoringType->setChecked(idx != 0);
 		monitoringType->setAccessibleName(
 			QTStr("Basic.AdvAudio.MonitoringSource")
 				.arg(sourceName));
@@ -233,8 +224,8 @@ OBSAdvAudioCtrl::OBSAdvAudioCtrl(QGridLayout *, obs_source_t *source_)
 			 SLOT(syncOffsetChanged(int)));
 	if (obs_audio_monitoring_available())
 		QWidget::connect(monitoringType,
-				 SIGNAL(currentIndexChanged(int)), this,
-				 SLOT(monitoringTypeChanged(int)));
+				 SIGNAL(clicked(bool)), this,
+				 SLOT(monitoringTypeChanged(bool)));
 	for (int i = 0; i < MAX_AUDIO_MIXES; i++) {
 		QWidget::connect(mixer[i], SIGNAL(clicked(bool)), this,
 				 SLOT(mixerChanged(bool)));
@@ -391,9 +382,8 @@ void OBSAdvAudioCtrl::SourceSyncChanged(int64_t offset)
 
 void OBSAdvAudioCtrl::SourceMonitoringTypeChanged(int type)
 {
-	int idx = monitoringType->findData(type);
 	monitoringType->blockSignals(true);
-	monitoringType->setCurrentIndex(idx);
+	monitoringType->setChecked(type != 0);
 	monitoringType->blockSignals(false);
 }
 
@@ -555,12 +545,11 @@ void OBSAdvAudioCtrl::syncOffsetChanged(int milliseconds)
 		true);
 }
 
-void OBSAdvAudioCtrl::monitoringTypeChanged(int index)
+void OBSAdvAudioCtrl::monitoringTypeChanged(bool checked)
 {
 	obs_monitoring_type prev = obs_source_get_monitoring_type(source);
 
-	obs_monitoring_type mt =
-		(obs_monitoring_type)monitoringType->itemData(index).toInt();
+	obs_monitoring_type mt = (obs_monitoring_type)(checked ? 2 : 1);
 	obs_source_set_monitoring_type(source, mt);
 
 	const char *type = nullptr;
