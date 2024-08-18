@@ -354,23 +354,18 @@ static void on_audio_playback(void *param, obs_source_t *source,
 		goto free_for_reconnect;
 	}
 
-	if (!muted) {
-		/* apply volume */
-		if (!close_float(vol, 1.0f, 0.0001f)) {
-			register float *cur = (float *)resample_data[0];
-			register float *end =
-				cur + resample_frames * monitor->channels;
+	/* apply volume */
+	if (!close_float(vol, 1.0f, 0.0001f)) {
+		register float *cur = (float *)resample_data[0];
+		register float *end = cur + resample_frames * monitor->channels;
 
-			while (cur < end)
-				*(cur++) *= vol;
-		}
-		memcpy(output, resample_data[0],
-		       resample_frames * monitor->channels * sizeof(float));
+		while (cur < end)
+			*(cur++) *= vol;
 	}
+	memcpy(output, resample_data[0],
+	       resample_frames * monitor->channels * sizeof(float));
 
-	hr = render->lpVtbl->ReleaseBuffer(render, resample_frames,
-					   muted ? AUDCLNT_BUFFERFLAGS_SILENT
-						 : 0);
+	hr = render->lpVtbl->ReleaseBuffer(render, resample_frames, 0);
 	if (FAILED(hr)) {
 		goto free_for_reconnect;
 	}
@@ -381,6 +376,7 @@ free_for_reconnect:
 	audio_monitor_free_for_reconnect(monitor);
 unlock:
 	ReleaseSRWLockExclusive(&monitor->playback_mutex);
+	UNUSED_PARAMETER(muted);
 }
 
 static inline void audio_monitor_free(struct audio_monitor *monitor)
