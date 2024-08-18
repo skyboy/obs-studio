@@ -2113,7 +2113,7 @@ void OBSBasicSettings::LoadOutputSettings()
 		ui->advOutputAudioTracksTab->setEnabled(false);
 		ui->advNetworkGroupBox->setEnabled(false);
 	}
-	
+
 	for (int i = 0; i < MAX_AUDIO_MIXES; ++i) {
 		COLOR_TRACK(streamTrack[i]);
 		COLOR_TRACK(recTrack[i]);
@@ -3424,14 +3424,14 @@ void OBSBasicSettings::SaveOutputSettings()
 	SaveSpinBox(ui->advOutFFABitrate, "AdvOut", "FFABitrate");
 	SaveEncoder(ui->advOutFFAEncoder, "AdvOut", "FFAEncoder");
 	SaveEdit(ui->advOutFFACfg, "AdvOut", "FFACustom");
-	
+
 	uint32_t ff_mixers = 0;
 	for (int i = 0; i < MAX_AUDIO_MIXES; ++i) {
 		if (advFFTrack[i]->isChecked())
 			ff_mixers |= 1 << i;
 	}
 	config_set_uint(main->Config(), "AdvOut", "FFAudioMixes", ff_mixers);
-	
+
 	char *trackName = new char[16];
 	for (int i = 0; i < MAX_AUDIO_MIXES; ++i) {
 		snprintf(trackName, 16, "Track%iBitrate", i + 1);
