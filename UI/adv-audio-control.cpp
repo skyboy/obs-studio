@@ -223,8 +223,7 @@ OBSAdvAudioCtrl::OBSAdvAudioCtrl(QGridLayout *, obs_source_t *source_)
 	QWidget::connect(syncOffset, SIGNAL(valueChanged(int)), this,
 			 SLOT(syncOffsetChanged(int)));
 	if (obs_audio_monitoring_available())
-		QWidget::connect(monitoringType,
-				 SIGNAL(clicked(bool)), this,
+		QWidget::connect(monitoringType, SIGNAL(clicked(bool)), this,
 				 SLOT(monitoringTypeChanged(bool)));
 	for (int i = 0; i < MAX_AUDIO_MIXES; i++) {
 		QWidget::connect(mixer[i], SIGNAL(clicked(bool)), this,
