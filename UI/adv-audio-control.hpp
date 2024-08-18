@@ -40,7 +40,7 @@ private:
 	QPointer<QLabel> labelL;
 	QPointer<QLabel> labelR;
 	QPointer<QSpinBox> syncOffset;
-	QPointer<QComboBox> monitoringType;
+	QPointer<QCheckBox> monitoringType;
 	QPointer<QCheckBox> mixer[MAX_AUDIO_MIXES];
 
 	OBSSignal volChangedSignal;
