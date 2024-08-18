@@ -636,10 +636,8 @@ OBSBasicSettings::OBSBasicSettings(QWidget *parent)
 	ui->enableAutoUpdates = nullptr;
 #endif
 
-	// Remove the Advanced Audio section if monitoring is not supported, as the monitoring device selection is the only item in the group box.
 	if (!obs_audio_monitoring_available()) {
-		delete ui->audioAdvGroupBox;
-		ui->audioAdvGroupBox = nullptr;
+		ui->monitoringDevice->setEnabled(false);
 	}
 
 #ifdef _WIN32
