@@ -144,7 +144,7 @@ void VolControl::SetName(const QString &newName)
 }
 
 #define VOL_MON_ACTIVE_STYLE "background-color: #00a000"
-#define VOL_MON_INACTIVE_STYLE "background-color: #d2d2d2"
+#define VOL_MON_INACTIVE_STYLE ""
 
 void VolControl::EmitConfigClicked()
 {
@@ -198,7 +198,7 @@ void VolControl::setPeakMeterType(enum obs_peak_meter_type peakMeterType)
 	volMeter->setPeakMeterType(peakMeterType);
 }
 
-VolControl::VolControl(OBSSource source_, const QIcon monitorIcon, bool vertical)
+VolControl::VolControl(OBSSource source_, QIcon monitorIcon, bool vertical)
 	: source(std::move(source_)),
 	  levelTotal(0.0f),
 	  levelCount(0.0f),
@@ -217,9 +217,7 @@ VolControl::VolControl(OBSSource source_, const QIcon monitorIcon, bool vertical
 	obs_monitoring_type monType = obs_source_get_monitoring_type(source);
 
 	config = new QPushButton(this);
-	QIcon mIcon = QIcon(monitorIcon);
-	mIcon.setIsMask(true);
-	config->setIcon(mIcon);
+	config->setIcon(monitorIcon);
 	config->setFlat(true);
 	config->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 	config->setMaximumSize(22, 22);
