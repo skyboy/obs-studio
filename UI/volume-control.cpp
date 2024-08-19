@@ -240,34 +240,26 @@ VolControl::VolControl(OBSSource source_, QIcon monitorIcon, bool vertical)
 	mainLayout->setSpacing(2);
 
 	if (vertical) {
-		QHBoxLayout *nameLayout = new QHBoxLayout;
-		QHBoxLayout *controlLayout = new QHBoxLayout;
-		QHBoxLayout *volLayout = new QHBoxLayout;
-		QHBoxLayout *meterLayout = new QHBoxLayout;
+		#define VOL_LAYOUT(var) \
+			auto var = new QHBoxLayout; \
+			var->setAlignment(Qt::AlignCenter); \
+			var->setContentsMargins(0, 0, 0, 0); \
+			var->setSpacing(0)
+		VOL_LAYOUT(nameLayout);
+		VOL_LAYOUT(volLayout);
+		VOL_LAYOUT(meterLayout);
+		VOL_LAYOUT(controlLayout);
+		#undef VOL_LAYOUT
 
-		nameLayout->setAlignment(Qt::AlignCenter);
-		meterLayout->setAlignment(Qt::AlignCenter);
-		controlLayout->setAlignment(Qt::AlignCenter);
-		volLayout->setAlignment(Qt::AlignCenter);
-
-		nameLayout->setContentsMargins(0, 0, 0, 0);
-		nameLayout->setSpacing(0);
 		nameLayout->addWidget(nameLabel);
 
-		controlLayout->setContentsMargins(0, 0, 0, 0);
-		controlLayout->setSpacing(0);
+		volLayout->addWidget(volLabel);
 
-		controlLayout->addWidget(config);
-		controlLayout->addWidget(mute);
-
-		meterLayout->setContentsMargins(0, 0, 0, 0);
-		meterLayout->setSpacing(0);
 		meterLayout->addWidget(volMeter);
 		meterLayout->addWidget(slider);
 
-		volLayout->setContentsMargins(0, 0, 0, 0);
-		volLayout->setSpacing(0);
-		volLayout->addWidget(volLabel);
+		controlLayout->addWidget(config);
+		controlLayout->addWidget(mute);
 
 		mainLayout->addItem(nameLayout);
 		mainLayout->addItem(volLayout);
