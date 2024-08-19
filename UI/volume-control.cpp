@@ -152,7 +152,7 @@ void VolControl::EmitConfigClicked()
 		(obs_monitoring_type)(prev == OBS_MONITORING_TYPE_NONE ? 2 : 0);
 	obs_source_set_monitoring_type(source, mt);
 
-	if (monType != OBS_MONITORING_TYPE_NONE)
+	if (mt != OBS_MONITORING_TYPE_NONE)
 		config->setStyleSheet(VOL_MON_ACTIVE_STYLE);
 	else
 		config->setStyleSheet("");
@@ -294,7 +294,7 @@ VolControl::VolControl(OBSSource source_, QIcon monitorIcon, bool vertical)
 		volLayout->setContentsMargins(0, 0, 0, 0);
 		volLayout->setSpacing(5);
 		volLayout->addWidget(config);
-		volLayout->addLayout(slider);
+		volLayout->addWidget(slider);
 		volLayout->addWidget(mute);
 
 		mainLayout->addItem(textLayout);
