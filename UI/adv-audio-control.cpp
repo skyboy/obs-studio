@@ -547,7 +547,7 @@ void OBSAdvAudioCtrl::monitoringTypeChanged(bool checked)
 {
 	obs_monitoring_type prev = obs_source_get_monitoring_type(source);
 
-	obs_monitoring_type mt = (obs_monitoring_type)(checked ? 2 : 1);
+	obs_monitoring_type mt = (obs_monitoring_type)(checked ? 2 : 0);
 	obs_source_set_monitoring_type(source, mt);
 
 	const char *type = nullptr;

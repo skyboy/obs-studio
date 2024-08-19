@@ -158,7 +158,7 @@ void VolControl::setPeakMeterType(enum obs_peak_meter_type peakMeterType)
 	volMeter->setPeakMeterType(peakMeterType);
 }
 
-VolControl::VolControl(OBSSource source_, bool showConfig, bool vertical)
+VolControl::VolControl(OBSSource source_, QIcon monitorIcon, bool vertical)
 	: source(std::move(source_)),
 	  levelTotal(0.0f),
 	  levelCount(0.0f),
@@ -174,21 +174,19 @@ VolControl::VolControl(OBSSource source_, bool showConfig, bool vertical)
 	QString sourceName = obs_source_get_name(source);
 	setObjectName(sourceName);
 
-	if (showConfig) {
-		config = new QPushButton(this);
-		config->setProperty("themeID", "configIconSmall");
-		config->setFlat(true);
-		config->setSizePolicy(QSizePolicy::Maximum,
-				      QSizePolicy::Maximum);
-		config->setMaximumSize(22, 22);
-		config->setAutoDefault(false);
+	config = new QPushButton(this);
+	config->setIcon(monitorIcon);
+	config->setFlat(true);
+	config->setSizePolicy(QSizePolicy::Maximum,
+				  QSizePolicy::Maximum);
+	config->setMaximumSize(22, 22);
+	config->setAutoDefault(false);
 
-		config->setAccessibleName(
-			QTStr("VolControl.Properties").arg(sourceName));
+	config->setAccessibleName(
+		QTStr("Basic.AdvAudio.Monitoring").arg(sourceName));
 
-		connect(config, &QAbstractButton::clicked, this,
-			&VolControl::EmitConfigClicked);
-	}
+	connect(config, &QAbstractButton::clicked, this,
+		&VolControl::EmitConfigClicked);
 
 	QVBoxLayout *mainLayout = new QVBoxLayout;
 	mainLayout->setContentsMargins(4, 4, 4, 4);
@@ -215,11 +213,7 @@ VolControl::VolControl(OBSSource source_, bool showConfig, bool vertical)
 		controlLayout->setContentsMargins(0, 0, 0, 0);
 		controlLayout->setSpacing(0);
 
-		if (showConfig)
-			controlLayout->addWidget(config);
-
-		controlLayout->addItem(new QSpacerItem(3, 0));
-		// Add Headphone (audio monitoring) widget here
+		controlLayout->addWidget(config);
 		controlLayout->addWidget(mute);
 
 		meterLayout->setContentsMargins(0, 0, 0, 0);
@@ -259,16 +253,16 @@ VolControl::VolControl(OBSSource source_, bool showConfig, bool vertical)
 		textLayout->setAlignment(nameLabel, Qt::AlignLeft);
 		textLayout->setAlignment(volLabel, Qt::AlignRight);
 
-		volLayout->addWidget(slider);
-		volLayout->addWidget(mute);
-		volLayout->setSpacing(5);
-
 		botLayout->setContentsMargins(0, 0, 0, 0);
 		botLayout->setSpacing(0);
+
+		botLayout->addWidget(config);
+
+		volLayout->addWidget(slider);
+		volLayout->setSpacing(5);
 		botLayout->addLayout(volLayout);
 
-		if (showConfig)
-			botLayout->addWidget(config);
+		botLayout->addWidget(mute);
 
 		mainLayout->addItem(textLayout);
 		mainLayout->addWidget(volMeter);

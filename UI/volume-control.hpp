@@ -308,7 +308,7 @@ signals:
 	void ConfigClicked();
 
 public:
-	explicit VolControl(OBSSource source, bool showConfig = false,
+	explicit VolControl(OBSSource source, QIcon monitorIcon,
 			    bool vertical = false);
 	~VolControl();
 
