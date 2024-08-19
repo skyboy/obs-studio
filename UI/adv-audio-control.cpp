@@ -171,10 +171,9 @@ OBSAdvAudioCtrl::OBSAdvAudioCtrl(QGridLayout *, obs_source_t *source_)
 	syncOffset->setAccessibleName(
 		QTStr("Basic.AdvAudio.SyncOffsetSource").arg(sourceName));
 
-	int idx;
 	if (obs_audio_monitoring_available()) {
 		int mt = (int)obs_source_get_monitoring_type(source);
-		monitoringType->setChecked(idx != 0);
+		monitoringType->setChecked(mt != 0);
 		monitoringType->setAccessibleName(
 			QTStr("Basic.AdvAudio.MonitoringSource")
 				.arg(sourceName));
