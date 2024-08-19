@@ -143,7 +143,8 @@ void VolControl::SetName(const QString &newName)
 	nameLabel->setText(newName);
 }
 
-#define VOL_MON_ACTIVE_STYLE "color: #00a000;fill: #00a000;stroke: #00a000"
+#define VOL_MON_ACTIVE_STYLE "background-color: #00a000"
+#define VOL_MON_INACTIVE_STYLE "background-color: #d2d2d2"
 
 void VolControl::EmitConfigClicked()
 {
@@ -155,7 +156,7 @@ void VolControl::EmitConfigClicked()
 	if (mt != OBS_MONITORING_TYPE_NONE)
 		config->setStyleSheet(VOL_MON_ACTIVE_STYLE);
 	else
-		config->setStyleSheet("");
+		config->setStyleSheet(VOL_MON_INACTIVE_STYLE);
 
 	const char *type = nullptr;
 
@@ -197,7 +198,7 @@ void VolControl::setPeakMeterType(enum obs_peak_meter_type peakMeterType)
 	volMeter->setPeakMeterType(peakMeterType);
 }
 
-VolControl::VolControl(OBSSource source_, QIcon monitorIcon, bool vertical)
+VolControl::VolControl(OBSSource source_, const QIcon monitorIcon, bool vertical)
 	: source(std::move(source_)),
 	  levelTotal(0.0f),
 	  levelCount(0.0f),
@@ -216,13 +217,17 @@ VolControl::VolControl(OBSSource source_, QIcon monitorIcon, bool vertical)
 	obs_monitoring_type monType = obs_source_get_monitoring_type(source);
 
 	config = new QPushButton(this);
-	config->setIcon(monitorIcon);
+	QIcon mIcon = QIcon(monitorIcon);
+	mIcon->setIsMask(true);
+	config->setIcon(mIcon);
 	config->setFlat(true);
 	config->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 	config->setMaximumSize(22, 22);
 	config->setAutoDefault(false);
 	if (monType != OBS_MONITORING_TYPE_NONE)
 		config->setStyleSheet(VOL_MON_ACTIVE_STYLE);
+	else
+		config->setStyleSheet(VOL_MON_INACTIVE_STYLE);
 
 	config->setAccessibleName(
 		QTStr("Basic.AdvAudio.Monitoring").arg(sourceName));
