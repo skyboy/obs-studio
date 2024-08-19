@@ -143,9 +143,48 @@ void VolControl::SetName(const QString &newName)
 	nameLabel->setText(newName);
 }
 
+#define VOL_MON_ACTIVE_STYLE "color: #00a000;fill: #00a000;stroke: #00a000"
+
 void VolControl::EmitConfigClicked()
 {
-	emit ConfigClicked();
+	obs_monitoring_type prev = obs_source_get_monitoring_type(source);
+	obs_monitoring_type mt =
+		(obs_monitoring_type)(prev == OBS_MONITORING_TYPE_NONE ? 2 : 0);
+	obs_source_set_monitoring_type(source, mt);
+
+	if (monType != OBS_MONITORING_TYPE_NONE)
+		config->setStyleSheet(VOL_MON_ACTIVE_STYLE);
+	else
+		config->setStyleSheet("");
+
+	const char *type = nullptr;
+
+	switch (mt) {
+	case OBS_MONITORING_TYPE_NONE:
+		type = "none";
+		break;
+	case OBS_MONITORING_TYPE_MONITOR_ONLY:
+		type = "monitor only";
+		break;
+	case OBS_MONITORING_TYPE_MONITOR_AND_OUTPUT:
+		type = "monitor and output";
+		break;
+	}
+
+	const char *name = obs_source_get_name(source);
+	blog(LOG_INFO, "User changed audio monitoring for source '%s' to: %s",
+	     name ? name : "(null)", type);
+
+	auto undo_redo = [](const std::string &name, obs_monitoring_type val) {
+		OBSSourceAutoRelease source =
+			obs_get_source_by_name(name.c_str());
+		obs_source_set_monitoring_type(source, val);
+	};
+
+	OBSBasic::Get()->undo_s.add_action(
+		QTStr("Undo.MonitoringType.Change").arg(name),
+		std::bind(undo_redo, std::placeholders::_1, prev),
+		std::bind(undo_redo, std::placeholders::_1, mt), name, name);
 }
 
 void VolControl::SetMeterDecayRate(qreal q)
@@ -174,19 +213,27 @@ VolControl::VolControl(OBSSource source_, QIcon monitorIcon, bool vertical)
 	QString sourceName = obs_source_get_name(source);
 	setObjectName(sourceName);
 
+	obs_monitoring_type monType = obs_source_get_monitoring_type(source);
+
 	config = new QPushButton(this);
 	config->setIcon(monitorIcon);
 	config->setFlat(true);
-	config->setSizePolicy(QSizePolicy::Maximum,
-				  QSizePolicy::Maximum);
+	config->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 	config->setMaximumSize(22, 22);
 	config->setAutoDefault(false);
+	if (monType != OBS_MONITORING_TYPE_NONE)
+		config->setStyleSheet(VOL_MON_ACTIVE_STYLE);
 
 	config->setAccessibleName(
 		QTStr("Basic.AdvAudio.Monitoring").arg(sourceName));
 
 	connect(config, &QAbstractButton::clicked, this,
 		&VolControl::EmitConfigClicked);
+
+	volMeter = new VolumeMeter(nullptr, obs_volmeter, vertical);
+	slider = new VolumeSlider(obs_fader,
+				  vertical ? Qt::Vertical : Qt::Horizontal);
+	volMeter->setFocusProxy(slider);
 
 	QVBoxLayout *mainLayout = new QVBoxLayout;
 	mainLayout->setContentsMargins(4, 4, 4, 4);
@@ -197,9 +244,6 @@ VolControl::VolControl(OBSSource source_, QIcon monitorIcon, bool vertical)
 		QHBoxLayout *controlLayout = new QHBoxLayout;
 		QHBoxLayout *volLayout = new QHBoxLayout;
 		QHBoxLayout *meterLayout = new QHBoxLayout;
-
-		volMeter = new VolumeMeter(nullptr, obs_volmeter, true);
-		slider = new VolumeSlider(obs_fader, Qt::Vertical);
 
 		nameLayout->setAlignment(Qt::AlignCenter);
 		meterLayout->setAlignment(Qt::AlignCenter);
@@ -230,8 +274,6 @@ VolControl::VolControl(OBSSource source_, QIcon monitorIcon, bool vertical)
 		mainLayout->addItem(meterLayout);
 		mainLayout->addItem(controlLayout);
 
-		volMeter->setFocusProxy(slider);
-
 		// Default size can cause clipping of long names in vertical layout.
 		QFont font = nameLabel->font();
 		QFontInfo info(font);
@@ -240,12 +282,8 @@ VolControl::VolControl(OBSSource source_, QIcon monitorIcon, bool vertical)
 
 		setMaximumWidth(110);
 	} else {
-		QHBoxLayout *volLayout = new QHBoxLayout;
 		QHBoxLayout *textLayout = new QHBoxLayout;
-		QHBoxLayout *botLayout = new QHBoxLayout;
-
-		volMeter = new VolumeMeter(nullptr, obs_volmeter, false);
-		slider = new VolumeSlider(obs_fader, Qt::Horizontal);
+		QHBoxLayout *volLayout = new QHBoxLayout;
 
 		textLayout->setContentsMargins(0, 0, 0, 0);
 		textLayout->addWidget(nameLabel);
@@ -253,22 +291,15 @@ VolControl::VolControl(OBSSource source_, QIcon monitorIcon, bool vertical)
 		textLayout->setAlignment(nameLabel, Qt::AlignLeft);
 		textLayout->setAlignment(volLabel, Qt::AlignRight);
 
-		botLayout->setContentsMargins(0, 0, 0, 0);
-		botLayout->setSpacing(0);
-
-		botLayout->addWidget(config);
-
-		volLayout->addWidget(slider);
+		volLayout->setContentsMargins(0, 0, 0, 0);
 		volLayout->setSpacing(5);
-		botLayout->addLayout(volLayout);
-
-		botLayout->addWidget(mute);
+		volLayout->addWidget(config);
+		volLayout->addLayout(slider);
+		volLayout->addWidget(mute);
 
 		mainLayout->addItem(textLayout);
 		mainLayout->addWidget(volMeter);
-		mainLayout->addItem(botLayout);
-
-		volMeter->setFocusProxy(slider);
+		mainLayout->addItem(volLayout);
 	}
 
 	setLayout(mainLayout);
