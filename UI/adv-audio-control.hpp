@@ -86,7 +86,7 @@ public slots:
 	void downmixMonoChanged(bool checked);
 	void balanceChanged(int val);
 	void syncOffsetChanged(int milliseconds);
-	void monitoringTypeChanged(int index);
+	void monitoringTypeChanged(bool checked);
 	void mixerChanged(bool checked);
 	void ResetBalance();
 };
