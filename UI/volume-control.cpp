@@ -218,7 +218,7 @@ VolControl::VolControl(OBSSource source_, const QIcon monitorIcon, bool vertical
 
 	config = new QPushButton(this);
 	QIcon mIcon = QIcon(monitorIcon);
-	mIcon->setIsMask(true);
+	mIcon.setIsMask(true);
 	config->setIcon(mIcon);
 	config->setFlat(true);
 	config->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
@@ -245,16 +245,16 @@ VolControl::VolControl(OBSSource source_, const QIcon monitorIcon, bool vertical
 	mainLayout->setSpacing(2);
 
 	if (vertical) {
-		#define VOL_LAYOUT(var) \
-			auto var = new QHBoxLayout; \
-			var->setAlignment(Qt::AlignCenter); \
-			var->setContentsMargins(0, 0, 0, 0); \
-			var->setSpacing(0)
+#define VOL_LAYOUT(var)                      \
+	auto var = new QHBoxLayout;          \
+	var->setAlignment(Qt::AlignCenter);  \
+	var->setContentsMargins(0, 0, 0, 0); \
+	var->setSpacing(0)
 		VOL_LAYOUT(nameLayout);
 		VOL_LAYOUT(volLayout);
 		VOL_LAYOUT(meterLayout);
 		VOL_LAYOUT(controlLayout);
-		#undef VOL_LAYOUT
+#undef VOL_LAYOUT
 
 		nameLayout->addWidget(nameLabel);
 
