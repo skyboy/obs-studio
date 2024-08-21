@@ -49,6 +49,15 @@ void VolControl::OBSVolumeMuted(void *data, calldata_t *calldata)
 				  Q_ARG(bool, muted));
 }
 
+void VolControl::OBSSourceMonitoringTypeChanged(void *data,
+						     calldata_t *calldata)
+{
+	int type = calldata_int(calldata, "type");
+	QMetaObject::invokeMethod(reinterpret_cast<VolControl *>(data),
+				  "SourceMonitoringTypeChanged",
+				  Q_ARG(int, type));
+}
+
 void VolControl::VolumeChanged()
 {
 	slider->blockSignals(true);
@@ -153,13 +162,7 @@ void VolControl::MonitorClicked()
 		(obs_monitoring_type)(prev == OBS_MONITORING_TYPE_NONE ? 2 : 0);
 	obs_source_set_monitoring_type(source, mt);
 
-	if (mt != OBS_MONITORING_TYPE_NONE) {
-		monitor->setProperty("themeID", "monitorActiveIconSmall");
-		monitor->setStyleSheet(VOL_MON_ACTIVE_STYLE);
-	} else {
-		monitor->setProperty("themeID", "monitorIconSmall");
-		monitor->setStyleSheet(VOL_MON_INACTIVE_STYLE);
-	}
+	SourceMonitoringTypeChanged((int)mt);
 
 	const char *type = nullptr;
 
@@ -191,6 +194,22 @@ void VolControl::MonitorClicked()
 		std::bind(undo_redo, std::placeholders::_1, mt), name, name);
 }
 
+void VolControl::SourceMonitoringTypeChanged(int type)
+{
+	obs_monitoring_type mt = (obs_monitoring_type)type;
+	if (mt != OBS_MONITORING_TYPE_NONE) {
+		monitor->setProperty("themeID", "monitorActiveIconSmall");
+		monitor->setStyleSheet(VOL_MON_ACTIVE_STYLE);
+		monitor->setTooltip(
+			QTStr("Basic.AdvAudio.MonitoringSource").arg(sourceName));
+	} else {
+		monitor->setProperty("themeID", "monitorIconSmall");
+		monitor->setStyleSheet(VOL_MON_INACTIVE_STYLE);
+		monitor->setTooltip(
+			QTStr("Basic.AdvAudio.Monitoring.None").arg(sourceName));
+	}
+}
+
 void VolControl::SetMeterDecayRate(qreal q)
 {
 	volMeter->setPeakDecayRate(q);
@@ -217,27 +236,20 @@ VolControl::VolControl(OBSSource source_, bool vertical)
 	QString sourceName = obs_source_get_name(source);
 	setObjectName(sourceName);
 
-	obs_monitoring_type monType = obs_source_get_monitoring_type(source);
-
 	monitor = new QPushButton(this);
 	monitor->setFlat(true);
 	monitor->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 	monitor->setMaximumSize(22, 22);
 	monitor->setAutoDefault(false);
-	if (monType != OBS_MONITORING_TYPE_NONE) {
-		monitor->setProperty("themeID", "monitorActiveIconSmall");
-		monitor->setStyleSheet(VOL_MON_ACTIVE_STYLE);
-	} else {
-		monitor->setProperty("themeID", "monitorIconSmall");
-		monitor->setStyleSheet(VOL_MON_INACTIVE_STYLE);
+	if (obs_audio_monitoring_available()) {
+		obs_monitoring_type monType = 
+			obs_source_get_monitoring_type(source);
+		SourceMonitoringTypeChanged((int)monType);
+
+		monitor->setAccessibleName(
+			QTStr("Basic.AdvAudio.Monitoring").arg(sourceName));
 	}
-
-	monitor->setAccessibleName(
-		QTStr("Basic.AdvAudio.Monitoring").arg(sourceName));
-
-	connect(monitor, &QAbstractButton::clicked, this,
-		&VolControl::MonitorClicked);
-
+	
 	volMeter = new VolumeMeter(nullptr, obs_volmeter, vertical);
 	slider = new VolumeSlider(obs_fader,
 				  vertical ? Qt::Vertical : Qt::Horizontal);
@@ -313,16 +325,25 @@ VolControl::VolControl(OBSSource source_, bool vertical)
 	mute->setChecked(muted);
 	volMeter->muted = muted;
 	mute->setAccessibleName(QTStr("VolControl.Mute").arg(sourceName));
+	mute->setTooltip(QTStr("VolControl.Mute").arg(sourceName));
+
 	obs_fader_add_callback(obs_fader, OBSVolumeChanged, this);
 	obs_volmeter_add_callback(obs_volmeter, OBSVolumeLevel, this);
 
-	signal_handler_connect(obs_source_get_signal_handler(source), "mute",
-			       OBSVolumeMuted, this);
+	signal_handler_t *handler = obs_source_get_signal_handler(source);
+	signal_handler_connect(handler, "mute", OBSVolumeMuted, this);
 
 	QWidget::connect(slider, SIGNAL(valueChanged(int)), this,
 			 SLOT(SliderChanged(int)));
 	QWidget::connect(mute, SIGNAL(clicked(bool)), this,
 			 SLOT(SetMuted(bool)));
+	if (obs_audio_monitoring_available()) {
+		connect(monitor, &QAbstractButton::clicked, this,
+			&VolControl::MonitorClicked);
+		signal_handler_connect(handler, "audio_monitoring",
+					     OBSSourceMonitoringTypeChanged,
+					     this);
+	}
 
 	obs_fader_attach_source(obs_fader, source);
 	obs_volmeter_attach_source(obs_volmeter, source);
@@ -353,8 +374,12 @@ VolControl::~VolControl()
 	obs_fader_remove_callback(obs_fader, OBSVolumeChanged, this);
 	obs_volmeter_remove_callback(obs_volmeter, OBSVolumeLevel, this);
 
-	signal_handler_disconnect(obs_source_get_signal_handler(source), "mute",
-				  OBSVolumeMuted, this);
+	signal_handler_t *handler = obs_source_get_signal_handler(source);
+	signal_handler_disconnect(handler, "mute", OBSVolumeMuted, this);
+	if (obs_audio_monitoring_available())
+		signal_handler_disconnect(handler, "audio_monitoring",
+					     OBSSourceMonitoringTypeChanged,
+					     this);
 
 	obs_fader_destroy(obs_fader);
 	obs_volmeter_destroy(obs_volmeter);
