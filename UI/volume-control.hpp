@@ -308,8 +308,7 @@ signals:
 	void ConfigClicked();
 
 public:
-	explicit VolControl(OBSSource source, QIcon monitorIcon,
-			    bool vertical = false);
+	explicit VolControl(OBSSource source, bool vertical = false);
 	~VolControl();
 
 	inline obs_source_t *GetSource() const { return source; }

@@ -153,10 +153,13 @@ void VolControl::EmitConfigClicked()
 		(obs_monitoring_type)(prev == OBS_MONITORING_TYPE_NONE ? 2 : 0);
 	obs_source_set_monitoring_type(source, mt);
 
-	if (mt != OBS_MONITORING_TYPE_NONE)
+	if (mt != OBS_MONITORING_TYPE_NONE) {
+		config->setProperty("themeID", "monitorIconSmall");
 		config->setStyleSheet(VOL_MON_ACTIVE_STYLE);
-	else
+	} else {
+		config->setProperty("themeID", "monitorActiveIconSmall");
 		config->setStyleSheet(VOL_MON_INACTIVE_STYLE);
+	}
 
 	const char *type = nullptr;
 
@@ -198,7 +201,7 @@ void VolControl::setPeakMeterType(enum obs_peak_meter_type peakMeterType)
 	volMeter->setPeakMeterType(peakMeterType);
 }
 
-VolControl::VolControl(OBSSource source_, QIcon monitorIcon, bool vertical)
+VolControl::VolControl(OBSSource source_, bool vertical)
 	: source(std::move(source_)),
 	  levelTotal(0.0f),
 	  levelCount(0.0f),
@@ -217,15 +220,17 @@ VolControl::VolControl(OBSSource source_, QIcon monitorIcon, bool vertical)
 	obs_monitoring_type monType = obs_source_get_monitoring_type(source);
 
 	config = new QPushButton(this);
-	config->setIcon(monitorIcon);
 	config->setFlat(true);
 	config->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 	config->setMaximumSize(22, 22);
 	config->setAutoDefault(false);
-	if (monType != OBS_MONITORING_TYPE_NONE)
+	if (monType != OBS_MONITORING_TYPE_NONE) {
+		config->setProperty("themeID", "monitorIconSmall");
 		config->setStyleSheet(VOL_MON_ACTIVE_STYLE);
-	else
+	} else {
+		config->setProperty("themeID", "monitorActiveIconSmall");
 		config->setStyleSheet(VOL_MON_INACTIVE_STYLE);
+	}
 
 	config->setAccessibleName(
 		QTStr("Basic.AdvAudio.Monitoring").arg(sourceName));

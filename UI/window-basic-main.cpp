@@ -3558,7 +3558,7 @@ void OBSBasic::ActivateAudioSource(OBSSource source)
 
 	bool vertical = config_get_bool(GetGlobalConfig(), "BasicWindow",
 					"VerticalVolControl");
-	VolControl *vol = new VolControl(source, GetAudioInputIcon(), vertical);
+	VolControl *vol = new VolControl(source, vertical);
 
 	vol->EnableSlider(!SourceVolumeLocked(source));
 
