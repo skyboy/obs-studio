@@ -146,7 +146,7 @@ void VolControl::SetName(const QString &newName)
 #define VOL_MON_ACTIVE_STYLE "background-color: #00a000"
 #define VOL_MON_INACTIVE_STYLE ""
 
-void VolControl::EmitConfigClicked()
+void VolControl::MonitorClicked()
 {
 	obs_monitoring_type prev = obs_source_get_monitoring_type(source);
 	obs_monitoring_type mt =
@@ -154,11 +154,11 @@ void VolControl::EmitConfigClicked()
 	obs_source_set_monitoring_type(source, mt);
 
 	if (mt != OBS_MONITORING_TYPE_NONE) {
-		config->setProperty("themeID", "monitorActiveIconSmall");
-		config->setStyleSheet(VOL_MON_ACTIVE_STYLE);
+		monitor->setProperty("themeID", "monitorActiveIconSmall");
+		monitor->setStyleSheet(VOL_MON_ACTIVE_STYLE);
 	} else {
-		config->setProperty("themeID", "monitorIconSmall");
-		config->setStyleSheet(VOL_MON_INACTIVE_STYLE);
+		monitor->setProperty("themeID", "monitorIconSmall");
+		monitor->setStyleSheet(VOL_MON_INACTIVE_STYLE);
 	}
 
 	const char *type = nullptr;
@@ -219,24 +219,24 @@ VolControl::VolControl(OBSSource source_, bool vertical)
 
 	obs_monitoring_type monType = obs_source_get_monitoring_type(source);
 
-	config = new QPushButton(this);
-	config->setFlat(true);
-	config->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
-	config->setMaximumSize(22, 22);
-	config->setAutoDefault(false);
+	monitor = new QPushButton(this);
+	monitor->setFlat(true);
+	monitor->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+	monitor->setMaximumSize(22, 22);
+	monitor->setAutoDefault(false);
 	if (monType != OBS_MONITORING_TYPE_NONE) {
-		config->setProperty("themeID", "monitorActiveIconSmall");
-		config->setStyleSheet(VOL_MON_ACTIVE_STYLE);
+		monitor->setProperty("themeID", "monitorActiveIconSmall");
+		monitor->setStyleSheet(VOL_MON_ACTIVE_STYLE);
 	} else {
-		config->setProperty("themeID", "monitorIconSmall");
-		config->setStyleSheet(VOL_MON_INACTIVE_STYLE);
+		monitor->setProperty("themeID", "monitorIconSmall");
+		monitor->setStyleSheet(VOL_MON_INACTIVE_STYLE);
 	}
 
-	config->setAccessibleName(
+	monitor->setAccessibleName(
 		QTStr("Basic.AdvAudio.Monitoring").arg(sourceName));
 
-	connect(config, &QAbstractButton::clicked, this,
-		&VolControl::EmitConfigClicked);
+	connect(monitor, &QAbstractButton::clicked, this,
+		&VolControl::MonitorClicked);
 
 	volMeter = new VolumeMeter(nullptr, obs_volmeter, vertical);
 	slider = new VolumeSlider(obs_fader,
@@ -266,7 +266,7 @@ VolControl::VolControl(OBSSource source_, bool vertical)
 		meterLayout->addWidget(volMeter);
 		meterLayout->addWidget(slider);
 
-		controlLayout->addWidget(config);
+		controlLayout->addWidget(monitor);
 		controlLayout->addWidget(mute);
 
 		mainLayout->addItem(nameLayout);
@@ -293,7 +293,7 @@ VolControl::VolControl(OBSSource source_, bool vertical)
 
 		volLayout->setContentsMargins(0, 0, 0, 0);
 		volLayout->setSpacing(5);
-		volLayout->addWidget(config);
+		volLayout->addWidget(monitor);
 		volLayout->addWidget(slider);
 		volLayout->addWidget(mute);
 

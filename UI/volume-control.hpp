@@ -279,7 +279,7 @@ private:
 	VolumeMeter *volMeter;
 	QSlider *slider;
 	MuteCheckBox *mute;
-	QPushButton *config = nullptr;
+	QPushButton *monitor;
 	float levelTotal;
 	float levelCount;
 	obs_fader_t *obs_fader;
@@ -294,7 +294,7 @@ private:
 				   const float inputPeak[MAX_AUDIO_CHANNELS]);
 	static void OBSVolumeMuted(void *data, calldata_t *calldata);
 
-	void EmitConfigClicked();
+	void MonitorClicked();
 
 private slots:
 	void VolumeChanged();
