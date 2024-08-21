@@ -738,6 +738,14 @@ QRadioButton::indicator:unchecked:disabled {
 	image: url(./Rachni/radio_unchecked_disabled.png);
 }
 
+* [themeID="monitorIconSmall"] {
+    qproperty-icon: url(./Dark/monitor.svg);
+}
+
+* [themeID="monitorActiveIconSmall"] {
+    qproperty-icon: url(./Dark/monitor-active.svg);
+}
+
 /***************************/
 /* --- Mute Checkboxes --- */
 /***************************/

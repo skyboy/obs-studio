@@ -612,6 +612,14 @@ QHeaderView::section {
     border-radius: 5px;
 }
 
+* [themeID="monitorIconSmall"] {
+    qproperty-icon: url(./Dark/monitor.svg);
+}
+
+* [themeID="monitorActiveIconSmall"] {
+    qproperty-icon: url(./Dark/monitor-active.svg);
+}
+
 /* Mute CheckBox */
 
 MuteCheckBox {
