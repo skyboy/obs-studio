@@ -154,10 +154,10 @@ void VolControl::EmitConfigClicked()
 	obs_source_set_monitoring_type(source, mt);
 
 	if (mt != OBS_MONITORING_TYPE_NONE) {
-		config->setProperty("themeID", "monitorIconSmall");
+		config->setProperty("themeID", "monitorActiveIconSmall");
 		config->setStyleSheet(VOL_MON_ACTIVE_STYLE);
 	} else {
-		config->setProperty("themeID", "monitorActiveIconSmall");
+		config->setProperty("themeID", "monitorIconSmall");
 		config->setStyleSheet(VOL_MON_INACTIVE_STYLE);
 	}
 
@@ -225,10 +225,10 @@ VolControl::VolControl(OBSSource source_, bool vertical)
 	config->setMaximumSize(22, 22);
 	config->setAutoDefault(false);
 	if (monType != OBS_MONITORING_TYPE_NONE) {
-		config->setProperty("themeID", "monitorIconSmall");
+		config->setProperty("themeID", "monitorActiveIconSmall");
 		config->setStyleSheet(VOL_MON_ACTIVE_STYLE);
 	} else {
-		config->setProperty("themeID", "monitorActiveIconSmall");
+		config->setProperty("themeID", "monitorIconSmall");
 		config->setStyleSheet(VOL_MON_INACTIVE_STYLE);
 	}
 
